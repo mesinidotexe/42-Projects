@@ -1,0 +1,10 @@
+# Pasta de configurações do VSCode
+.vscode/
+
+# Arquivos compilados
+*.o
+a.out
+a.exe
+
+# Arquivos temporários do editor
+*~
