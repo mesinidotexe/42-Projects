@@ -12,17 +12,18 @@
 
 #include "push_swap.h"
 
-void	pa(t_stack **listaA, t_stack **listaB)
+bool	pa(t_stack **listaA, t_stack **listaB)
 {
 	t_stack	*temp;
 
 	if (!listaB || !*listaB)
-		return ;
+		return (false);
 	temp = *listaB;
 	*listaB = (*listaB)->next;
 	temp->next = *listaA;
 	*listaA = temp;
 	write(1, "pa\n", 3);
+	return (true);
 }
 
 void	pb(t_stack **listaB, t_stack **listaA)

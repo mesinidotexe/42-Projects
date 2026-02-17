@@ -1,24 +1,36 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_put_nbr_base.c                                  :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: vmesini- <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/02/09 15:15:18 by vmesini-          #+#    #+#             */
+/*   Updated: 2026/02/09 15:15:22 by vmesini-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <unistd.h>
 
-void ft_put_nbr_base(long nbr, char *base)
+void	ft_put_nbr_base(long nbr, char *base)
 {
-    int digits;
-    int value;
+	int	digits;
+	int	value;
 
-    digits = 0;
-    if (nbr < 0)
-    {
-        write (1, "-", 1);
-        nbr *= -1;
-    }
-    while (base[digits])
-        digits++;
-    if (digits < 2)
-        return;
-    if (nbr >= digits)
-        ft_put_nbr_base(nbr / digits, base);
-    value = base[nbr % digits];
-    write (1, &value, 1);
+	digits = 0;
+	if (nbr < 0)
+	{
+		write(1, "-", 1);
+		nbr *= -1;
+	}
+	while (base[digits])
+		digits++;
+	if (digits < 2)
+		return ;
+	if (nbr >= digits)
+		ft_put_nbr_base(nbr / digits, base);
+	value = base[nbr % digits];
+	write(1, &value, 1);
 }
 
 // int	main(void)

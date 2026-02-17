@@ -55,7 +55,8 @@ char	**split_all(char **argv, char **splitted)
 		j = 0;
 		while (tmp[j])
 		{
-			if (!(splitted[k++] = ft_strdup(tmp[j])))
+			splitted[k++] = ft_strdup(tmp[j]);
+			if (!splitted)
 				return (free_array(splitted), free_array(tmp), NULL);
 			j++;
 		}

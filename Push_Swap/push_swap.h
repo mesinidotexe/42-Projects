@@ -24,6 +24,7 @@
 typedef struct s_stack
 {
 	int				number;
+	int				index;
 	struct s_stack	*next;
 }					t_stack;
 
@@ -42,6 +43,8 @@ int					empty_strings(int argc, char **argv);
 // Utils
 void				error(void);
 int					find_min_index(t_stack *stack);
+int					find_max_index(t_stack *a);
+void				indexing(t_stack *a);
 
 // Data Order
 int					inorder(t_stack *Lista);
@@ -60,13 +63,13 @@ int					ps_lstsize(t_stack *lst);
 
 // Sorting
 void				sorting(t_stack *a, t_stack *b);
-void				sorting_general(t_stack *a, t_stack *b);
+void				general(t_stack **a, t_stack **b);
 
 // operations
 void				sa(t_stack *a);
 void				sb(t_stack *b);
 void				ss(t_stack *a, t_stack *b);
-void				pa(t_stack **a, t_stack **b);
+bool				pa(t_stack **a, t_stack **b);
 void				pb(t_stack **b, t_stack **a);
 void				ra(t_stack *a);
 void				rb(t_stack *b);

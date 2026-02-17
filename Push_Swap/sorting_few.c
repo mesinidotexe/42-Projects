@@ -1,33 +1,45 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   sorting_few.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: vmesini- <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/02/09 15:13:00 by vmesini-          #+#    #+#             */
+/*   Updated: 2026/02/09 15:13:01 by vmesini-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "push_swap.h"
 
-static void	sorting_three(t_stack *a)
+void	sorting_three(t_stack *a)
 {
 	int	first;
 	int	second;
 	int	third;
-	
+
 	first = a->number;
 	second = a->next->number;
 	third = a->next->next->number;
-	if (first > second && second > third) // 3 2 1
+	if (first > second && second > third)
 	{
 		ra(a);
 		sa(a);
 	}
-	else if (first > second && first > third && second < third) // 3 1 2
+	else if (first > second && first > third && second < third)
 		ra(a);
-	else if (first < second && second > third && first < third)	// 1 3 2
+	else if (first < second && second > third && first < third)
 	{
 		rra(a);
 		sa(a);
 	}
-	else if (first > second && first < third) // 2 1 3
+	else if (first > second && first < third)
 		sa(a);
-	else if (first < second && second > third && first > third)	// 2 3 1
+	else if (first < second && second > third && first > third)
 		rra(a);
 }
 
-static void	sorting_four(t_stack **a, t_stack **b)
+void	sorting_four(t_stack **a, t_stack **b)
 {
 	int	min_index;
 
@@ -48,7 +60,7 @@ static void	sorting_four(t_stack **a, t_stack **b)
 	pa(a, b);
 }
 
-static void	sorting_five(t_stack **a, t_stack **b)
+void	sorting_five(t_stack **a, t_stack **b)
 {
 	int	min_index;
 
@@ -85,5 +97,5 @@ void	sorting(t_stack *a, t_stack *b)
 	else if (ps_lstsize(a) == 5)
 		sorting_five(&a, &b);
 	else if (ps_lstsize(a) >= 6)
-		sorting_general(a, b);
+		general(&a, &b);
 }

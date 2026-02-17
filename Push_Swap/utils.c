@@ -43,3 +43,43 @@ int	find_min_index(t_stack *stack)
 	}
 	return (min_index);
 }
+
+int	find_max_index(t_stack *a)
+{
+	int		max;
+	t_stack	*node;
+
+	if (!a)
+		return (0);
+	max = a->index;
+	node = a->next;
+	while (node)
+	{
+		if (node->index > max)
+			max = node->index;
+		node = node->next;
+	}
+	return (max);
+}
+
+void	indexing(t_stack *a)
+{
+	t_stack	*current;
+	t_stack	*runner;
+	int		index;
+
+	current = a;
+	while (current)
+	{
+		index = 0;
+		runner = a;
+		while (runner)
+		{
+			if (runner->number < current->number)
+				index++;
+			runner = runner->next;
+		}
+		current->index = index;
+		current = current->next;
+	}
+}

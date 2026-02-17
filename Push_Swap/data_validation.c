@@ -12,9 +12,9 @@
 
 #include "push_swap.h"
 
-int empty_strings(int argc, char **argv)
+int	empty_strings(int argc, char **argv)
 {
-	int i;
+	int	i;
 
 	i = 1;
 	while (i < argc)
@@ -89,7 +89,6 @@ int	has_duplicates(int argc, char **argv)
 	}
 	return (0);
 }
-
 
 int	check_data(int argc, char *argv[])
 {

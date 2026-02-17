@@ -14,29 +14,41 @@
 
 void	ra(t_stack *lista)
 {
-	int	temp;
+	int	temp_num;
+	int	temp_idx;
 
-	temp = lista->number;
+	if (!lista || !lista->next)
+		return ;
+	temp_num = lista->number;
+	temp_idx = lista->index;
 	while (lista->next)
 	{
 		lista->number = lista->next->number;
+		lista->index = lista->next->index;
 		lista = lista->next;
 	}
-	lista->number = temp;
+	lista->number = temp_num;
+	lista->index = temp_idx;
 	write(1, "ra\n", 3);
 }
 
 void	rb(t_stack *lista)
 {
-	int	temp;
+	int	temp_num;
+	int	temp_idx;
 
-	temp = lista->number;
+	if (!lista || !lista->next)
+		return ;
+	temp_num = lista->number;
+	temp_idx = lista->index;
 	while (lista->next)
 	{
 		lista->number = lista->next->number;
+		lista->index = lista->next->index;
 		lista = lista->next;
 	}
-	lista->number = temp;
+	lista->number = temp_num;
+	lista->index = temp_idx;
 	write(1, "rb\n", 3);
 }
 
@@ -45,6 +57,8 @@ void	rr(t_stack *listaA, t_stack *listaB)
 	int	tempa;
 	int	tempb;
 
+	if (!listaA || !listaA->next || !listaB || !listaB->next)
+		return ;
 	tempa = listaA->number;
 	while (listaA->next)
 	{
