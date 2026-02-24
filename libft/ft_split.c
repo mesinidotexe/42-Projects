@@ -14,7 +14,7 @@
 
 int	ft_count_word(char const *s, char c)
 {
-	int			i;
+	int	i;
 	int	word;
 
 	i = 0;
@@ -79,26 +79,9 @@ char	**ft_split(char const *s, char c)
 			j++;
 		array[i] = ft_write_words(s + j, c);
 		if (!array[i])
-			return(free_array(array), NULL);
+			return (free_array(array), NULL);
 		j = j + ft_str_char_len(&s[j], c);
 		i++;
 	}
 	return (array);
 }
-/*int	main(void)
-{
-	char	*string;
-	char	**arrays;
-	int		i;
-
-	string = "             >Hello World f 123 Bye :)<   ";
-	arrays = ft_split(string, ' ');
-	i = 0;
-	while (arrays[i] != NULL)
-	{
-		printf("%s\n", arrays[i]);
-		i++;
-	}
-	printf("%s\n", arrays[i]);
-	return (0);
-} */

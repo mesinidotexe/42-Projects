@@ -1,40 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_atol.c                                          :+:      :+:    :+:   */
+/*   ft_is_operator.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vmesini- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/12/30 20:58:50 by vmesini-          #+#    #+#             */
-/*   Updated: 2025/12/30 20:58:55 by vmesini-         ###   ########.fr       */
+/*   Created: 2026/02/09 15:11:57 by vmesini-          #+#    #+#             */
+/*   Updated: 2026/02/09 15:11:58 by vmesini-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-long	ft_atol(char *str)
+int	ft_is_operator(char c)
 {
-	long	nbr;
-	int		neg;
-
-	nbr = 0;
-	neg = 0;
-	while ((*str >= 9 && *str <= 13) || (*str == 32))
-		str++;
-	if (*str == '-' || *str == '+')
-	{
-		if (*str == '-')
-			neg++;
-		str++;
-	}
-	while (*str >= 48 && *str <= 57)
-	{
-		nbr = nbr * 10 + (*str - '0');
-		if (nbr > INT_MAX)
-			return ((long)(INT_MAX) + 1);
-		str++;
-	}
-	if (neg % 2 != 0)
-		nbr = -nbr;
-	return (nbr);
+	if (c == '-' || c == '+')
+		return (1);
+	return (0);
 }
