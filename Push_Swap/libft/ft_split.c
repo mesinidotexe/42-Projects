@@ -85,20 +85,3 @@ char	**ft_split(char const *s, char c)
 	}
 	return (array);
 }
-/*int	main(void)
-{
-	char	*string;
-	char	**arrays;
-	int		i;
-
-	string = "             >Hello World f 123 Bye :)<   ";
-	arrays = ft_split(string, ' ');
-	i = 0;
-	while (arrays[i] != NULL)
-	{
-		printf("%s\n", arrays[i]);
-		i++;
-	}
-	printf("%s\n", arrays[i]);
-	return (0);
-} */
