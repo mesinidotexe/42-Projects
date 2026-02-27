@@ -5,7 +5,7 @@ class Plant:
 		self.age = age
 
 def main():
-	type = [
+	tipo = [
 		      Plant ('Rose', 25, 30),
 		   	  Plant ('Oak', 200, 365),
 			  Plant ('Cactus', 5, 90),
@@ -14,7 +14,7 @@ def main():
 		     ]
 	print ("=== Plant Factory Output ===")
 	i = 0
-	for plant in type:
+	for plant in tipo:
 		print(f"Created: {plant.name}({plant.height}cm, {plant.age} days)")
 		i += 1
 	print(f"Total plants created: {i}")
