@@ -1,6 +1,6 @@
 days = int(input("Days until harvest: "))
 i = 1
 while i <= days:
-    print (f"{i}")
+    print(f"{i}")
     i += 1
-print ("Harvest time!")
+print("Harvest time!")
