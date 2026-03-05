@@ -1,15 +1,19 @@
 class Plant:
-    def __init__(self, name, height, age):
+    def __init__(self, name: str, height: int, old: int):
         self.name = name
         self.height = height
-        self.age = age
+        self.old = old
         self.growth = 0
 
     def grow(self):
         self.height += 1
-        self.age += 1
         self.growth += 1
 
+    def age(self):
+        self.old += 1
+
+    def get_info():
+        print("It grew beatifully!")
 
 def main():
     plants = [
@@ -23,12 +27,14 @@ def main():
         if day in (1, 7):
             print(f"=== Day {day} ===")
             for plant in plants:
-                print(f"{plant.name}: {plant.height}cm, {plant.age} days old")
+                print(f"{plant.name}: {plant.height}cm, {plant.old} days old")
         for plant in plants:
             plant.grow()
+            plant.age()
         day += 1
 
     print(f"Growth this week: +{day - 2}cm")
+    Plant.get_info()
 
 
 if __name__ == '__main__':
