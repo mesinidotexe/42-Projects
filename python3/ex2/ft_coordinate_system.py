@@ -28,8 +28,8 @@ def main(argv):
             y = int(args[1])
             z = int(args[2])
         except ValueError:
-            print('Non integer value passed as a parameter')
-            return
+            raise ValueError('Non integer value passed as a parameter')
+            
         distance = math.sqrt((x - 0)** 2 + (y - 0)** 2 + (z - 0)** 2)
         print(f'Distance between (0, 0, 0) and {args}: {float(distance)}')
 if __name__ == '__main__':
