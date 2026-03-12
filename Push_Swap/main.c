@@ -23,21 +23,21 @@ int	main(int argc, char *argv[])
 		a = NULL;
 		b = NULL;
 		if (empty_strings(argc, argv))
-		error();
+			error();
 		splitted = malloc(sizeof (char *) * (count_numbers(argv) + 1));
 		if (!splitted)
-		error();
+			error();
 		splitted = split_all(argv, splitted);
 		if (!splitted)
-		error();
+			error();
 		if (!validate_splitted(splitted, argv[0]))
-		return (free_array (splitted), error(), -1);
+			return (free_array (splitted), error(), -1);
 		a = arg_to_stack(a, splitted);
 		if (!a)
 		return (error(), -1);
-		free_array(splitted);
+			free_array(splitted);
 		if (!inorder(a))
-		sorting(a, b);
+			sorting(a, b);
 		free_list(a, b);
 	}
 	return (0);
