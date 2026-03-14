@@ -20,6 +20,37 @@ def create_player(events):
             print('...\n')
 
 
+def fibonacci(n):
+    a = 0
+    b = 1
+    for _ in range(n):
+        yield a
+        temp = a + b
+        a = b
+        b = temp
+    
+
+def prime_num(n):
+    counter = 0
+    prime = 2
+
+    while counter < n:
+        divisor = 2
+        is_prime = True
+
+        while divisor <= prime / 2:
+            if prime % divisor == 0:
+                is_prime = False
+                break
+            divisor += 1
+
+        if is_prime:
+            yield prime
+            counter += 1
+            
+        prime += 1
+
+
 def main():
     print('=== Game Data Stream Processor ===')
 
@@ -48,6 +79,9 @@ def main():
     print(f'High-level players (10+): {high_level}')
     print(f'Treasure events: {treasure_events}')
     print(f'Level-up events: {level_up}')
+    print('\n=== Generator Demonstration ===')
+    print(f'Fibonacci sequence (first 10): {list(fibonacci(10))}')
+    print(f'Prime numbers (first 5): {list(prime_num(5))}')
 
 if __name__ == '__main__':
     main()
