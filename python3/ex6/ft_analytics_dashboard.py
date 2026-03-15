@@ -76,8 +76,20 @@ def main():
 
     print('=== Combined Analysis ===')
     print(f'Total players: {len(players)}')
-    print(f'Total unique achievements: {len(achievements.values())}')
-
+    total_achievements = [
+        content for each_list in achievements.values()
+        for content in each_list
+    ]
+    print(f'Total unique achievements: {len(total_achievements)}')
+    average = sum(a for a in scores.values()) / len(scores)
+    print(f'Average score: {average}')
+    max_score = max(scores.values())
+    top_performer = ""
+    for mvp, score in scores.items():
+        if max_score == score:
+            top_performer = mvp
+    print(f'Top Performer: {top_performer}, ({max_score} points, '
+          f'{len(achievements[top_performer])} achievements')
 
 if __name__ == '__main__':
     main()
