@@ -1,10 +1,11 @@
 import sys
 import math
 
+
 def main(argv):
     print('=== Game Coordinate System ===')
     i = 0
-    for arg in argv:
+    for _ in argv:
         i += 1
     if i >= 4:
         try:
@@ -19,7 +20,7 @@ def main(argv):
         coord = (x, y, z)
         print(f'Parsing coordinates: {coord}')
         print(f'Parsed position: {coord}')
-        distance = math.sqrt((x - 0)** 2 + (y - 0)** 2 + (z - 0)** 2)
+        distance = math.sqrt((x - 0) ** 2 + (y - 0) ** 2 + (z - 0) ** 2)
         print(f'Distance between (0, 0, 0) and {coord}: {float(distance)}')
     elif i == 2:
         args = argv[1].split()
@@ -29,8 +30,9 @@ def main(argv):
             z = int(args[2])
         except ValueError:
             raise ValueError('Non integer value passed as a parameter')
-            
-        distance = math.sqrt((x - 0)** 2 + (y - 0)** 2 + (z - 0)** 2)
+        distance = math.sqrt((x - 0) ** 2 + (y - 0) ** 2 + (z - 0) ** 2)
         print(f'Distance between (0, 0, 0) and {args}: {float(distance)}')
+
+
 if __name__ == '__main__':
     main(sys.argv)

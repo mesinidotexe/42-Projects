@@ -28,7 +28,7 @@ def fibonacci(n):
         temp = a + b
         a = b
         b = temp
-    
+
 
 def prime_num(n):
     counter = 0
@@ -47,7 +47,7 @@ def prime_num(n):
         if is_prime:
             yield prime
             counter += 1
-            
+
         prime += 1
 
 
@@ -73,8 +73,7 @@ def main():
         elif player.action == 'leveled up':
             level_up += 1
 
-
-    print ('=== Stream Analytics ===')
+    print('=== Stream Analytics ===')
     print(f'Total events processed: {total_events}')
     print(f'High-level players (10+): {high_level}')
     print(f'Treasure events: {treasure_events}')
@@ -82,6 +81,7 @@ def main():
     print('\n=== Generator Demonstration ===')
     print(f'Fibonacci sequence (first 10): {list(fibonacci(10))}')
     print(f'Prime numbers (first 5): {list(prime_num(5))}')
+
 
 if __name__ == '__main__':
     main()

@@ -1,11 +1,14 @@
 class EmptyError(Exception):
     pass
 
+
 class WaterError(Exception):
     pass
 
+
 class LightError(Exception):
     pass
+
 
 def check_plant_health(plant_name, water_level, sunlight_hours):
     try:
@@ -33,6 +36,7 @@ def test_plant_checks():
             print("Plant is healthy")
         except Exception as e:
             print(e)
+
 
 if __name__ == '__main__':
     test_plant_checks()

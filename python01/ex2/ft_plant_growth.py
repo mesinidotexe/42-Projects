@@ -15,6 +15,7 @@ class Plant:
     def get_info():
         print("It grew beatifully!")
 
+
 def main():
     plants = [
               Plant('Rose', 25, 30),

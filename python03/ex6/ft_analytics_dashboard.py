@@ -32,11 +32,13 @@ def main():
     print('=== Game Analytics Dashboard ===')
     print()
     print('=== List Comprehension Examples ===')
-    high_score_players = [player for player in players if scores[player] > 2000]
+    high_score_players = [
+        player for player in players if scores[player] > 2000]
     print(f'High Scores (>2000): {high_score_players}')
     doubled_scores = [score * 2 for score in scores.values()]
     print(f'Scores doubled: {doubled_scores}')
-    active_players = [player for player, state in status.items() if state == "active"]
+    active_players = [
+        player for player, state in status.items() if state == "active"]
     print(f'Active players: {active_players}')
 
     print()
@@ -90,6 +92,7 @@ def main():
             top_performer = mvp
     print(f'Top Performer: {top_performer}, ({max_score} points, '
           f'{len(achievements[top_performer])} achievements')
+
 
 if __name__ == '__main__':
     main()

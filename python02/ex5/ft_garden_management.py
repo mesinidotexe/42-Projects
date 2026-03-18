@@ -1,8 +1,10 @@
 class EmptyError(Exception):
     pass
 
+
 class WaterError(Exception):
     pass
+
 
 class LightError(Exception):
     pass
@@ -12,13 +14,12 @@ class GardenManager:
 
     def __init__(self):
         self.gardens = {}
-    
+
     def add_plant(self, name, water, light):
         if name == "":
             raise EmptyError("The name of the plant cannot be empty!")
         self.gardens[name] = {"water": water, "light": light}
         print(f"{name} added!")
-
 
     def water_plant(self, name, water):
         print("Opening watering sysytem")
@@ -28,7 +29,6 @@ class GardenManager:
             print(f"Watering {name} with {water} liters")
         finally:
             print("Closing watering system\n")
-
 
     def check_plant_health(self, name):
         plant = self.gardens.get(name)
@@ -47,7 +47,6 @@ class GardenManager:
 def test_garden_management():
     manager = GardenManager()
 
-    # adicionar plantas
     manager.add_plant("Rose", 5, 5)
     manager.add_plant("Tulip", 5, -1)
     try:
@@ -55,8 +54,6 @@ def test_garden_management():
     except EmptyError as e:
         print(f"{e}\n")
 
-
-    # regar plantas
     manager.water_plant("Rose", 5)
     manager.water_plant("Tulip", 5)
     try:
@@ -64,12 +61,12 @@ def test_garden_management():
     except WaterError as e:
         print(f"{e}\n")
 
-    # checar saúde
     manager.check_plant_health("Rose")
     try:
         manager.check_plant_health("Tulip")  # erro
     except LightError as e:
         print(e)
+
 
 if __name__ == '__main__':
     test_garden_management()

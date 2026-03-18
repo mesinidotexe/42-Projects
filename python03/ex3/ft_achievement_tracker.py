@@ -2,7 +2,7 @@ class Player:
     def __init__(self, name, achievements):
         self.name = name
         self.achievements = set(achievements)
-        
+
 
 def main():
     print('=== Achievement Tracker System ===')
@@ -13,7 +13,7 @@ def main():
         "treasure_hunter",
         "speed_demon"
     ])
-    
+
     bob = Player("bob", [
         "first_kill",
         "level_10",
@@ -41,7 +41,7 @@ def main():
     for ach in achievements:
         print(f'-{ach}')
     print(f'Total achievements: {len(achievements)}\n')
-    
+
     common = alice.achievements.intersection(bob.achievements)
     common = common.intersection(charlie.achievements)
     print(f'Common to all players: {common}')

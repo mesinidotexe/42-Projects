@@ -10,9 +10,10 @@ def garden_operations(error):
             dict = {"num": 5, "str": 'abc'}
             print(dict["bla"])
 
+
 def test_error_types():
     print("=== Garden Error Types Demo ===\n")
-    
+
     try:
         garden_operations('abc')
         print("Testing ValueError...")
@@ -34,7 +35,7 @@ def test_error_types():
     try:
         garden_operations(dict)
         print("Testing KeyError...")
-        print("Caught KeyError: 'missing\_plant'")
+        print("Caught KeyError: 'missing_plant'")
     finally:
         print()
     try:
@@ -47,6 +48,7 @@ def test_error_types():
     finally:
         print()
     print("All error types tested successfully!")
+
 
 if __name__ == '__main__':
     test_error_types()

@@ -1,5 +1,3 @@
-import sys
-
 def main():
     print('=== Current Inventory ===')
 
@@ -72,9 +70,9 @@ def main():
         if item["quantity"] >= 5:
             abundance["high"].append(name)
         elif item["quantity"] >= 2:
-             abundance["mid"].append(name)
+            abundance["mid"].append(name)
         elif item["quantity"] == 1:
-             abundance["low"].append(name)
+            abundance["low"].append(name)
     print(f"\n{abundance}")
 
 
