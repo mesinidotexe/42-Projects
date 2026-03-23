@@ -1,16 +1,19 @@
-def check_temperature(temp_str):
-    try:
-        int(temp_str)
-        print(f"Testing Temperature: {temp_str}")
-    except ValueError:
-        print(f'Error: "{temp_str}" is not a valid number')
-    except Exception:
-        print('Something went wrong!')
+def input_temperature(temp_str):
+    return int(temp_str)
+
+
+def test_temperature():
+    test_values = ["25", "abc"]
+
+    for value in test_values:
+        try:
+            temp = input_temperature(value)
+            print(f"Valid temperature: {temp}")
+        except ValueError:
+            print(f'Error: "{value}" is not a valid number')
+
+    print("\nAll tests completed - program didn't crash!")
 
 
 if __name__ == '__main__':
-    check_temperature("25")
-    check_temperature("abc")
-    check_temperature("100")
-    check_temperature("-50")
-    print('\nAll tests completed - program didnt crash!')
+    test_temperature()
