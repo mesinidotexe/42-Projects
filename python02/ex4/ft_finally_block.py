@@ -5,7 +5,8 @@ class PlantError(Exception):
 
 def water_plant(plant_name):
     if not plant_name[0].isupper():
-        raise PlantError(f"Plant name '{plant_name}' must start with a capital letter")
+        raise PlantError(f"Plant name '{plant_name}'"
+                         f"must start with a capital letter")
 
     print(f"Watering plant: {plant_name}")
 
