@@ -1,38 +1,44 @@
-import sys
 import math
 
 
-def main(argv):
-    print('=== Game Coordinate System ===')
-    i = 0
-    for _ in argv:
-        i += 1
-    if i >= 4:
+def get_player_pos():
+    while True:
         try:
-            x = int(argv[1])
-            y = int(argv[2])
-            z = int(argv[3])
+            x = float(input("Enter a valid value for 'x': "))
+            y = float(input("Enter a valid value for 'y': "))
+            z = float(input("Enter a valid value for 'z': "))
+            return (x, y, z)
         except ValueError:
-            raise ValueError('Non integer value passed as a parameter')
-        except IndexError:
-            print("Please provide 3 coordinates")
-            return
-        coord = (x, y, z)
-        print(f'Parsing coordinates: {coord}')
-        print(f'Parsed position: {coord}')
-        distance = math.sqrt((x - 0) ** 2 + (y - 0) ** 2 + (z - 0) ** 2)
-        print(f'Distance between (0, 0, 0) and {coord}: {float(distance)}')
-    elif i == 2:
-        args = argv[1].split()
-        try:
-            x = int(args[0])
-            y = int(args[1])
-            z = int(args[2])
-        except ValueError:
-            raise ValueError('Non integer value passed as a parameter')
-        distance = math.sqrt((x - 0) ** 2 + (y - 0) ** 2 + (z - 0) ** 2)
-        print(f'Distance between (0, 0, 0) and {args}: {float(distance)}')
+            print("Invalid input. Please enter coordinates in format x,y,z")
 
 
-if __name__ == '__main__':
-    main(sys.argv)
+def distance_3d(p1, p2):
+    return math.sqrt(
+        (p2[0] - p1[0]) ** 2 +
+        (p2[1] - p1[1]) ** 2 +
+        (p2[2] - p1[2]) ** 2
+    )
+
+
+def main():
+    print("=== Game Coordinate System ===")
+
+    pos1 = (get_player_pos())
+
+    print("Position tuple:", pos1)
+    print("x:", pos1[0])
+    print("y:", pos1[1])
+    print("z:", pos1[2])
+
+    center = (0, 0, 0)
+    dist_center = distance_3d(pos1, center)
+    print("Distance to center:", round(dist_center, 2))
+
+    pos2 = (get_player_pos())
+
+    dist_between = distance_3d(pos1, pos2)
+    print("Distance between points:", round(dist_between, 2))
+
+
+if __name__ == "__main__":
+    main()

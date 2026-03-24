@@ -1,79 +1,74 @@
+import sys
+
+
 def main():
     print('=== Current Inventory ===')
 
-    sword = {
-        "name": "sword",
-        "type": "weapon",
-        "quantity": 1,
-        "value": 150
-    }
+    inventory = {}
 
-    potion = {
-        "name": "potion",
-        "type": "consumable",
-        "quantity": 5,
-        "value": 10
-    }
+    # 🔹 Parsing dos argumentos
+    for arg in sys.argv[1:]:
+        if ':' not in arg:
+            print(f'Invalid parameter: {arg}')
+            continue
 
-    armor = {
-        "name": "armor",
-        "type": "wearable",
-        "quantity": 3,
-        "value": 80
-    }
+        parts = arg.split(':')
 
-    shield = {
-        "name": "shield",
-        "type": "equipable",
-        "quantity": 2,
-        "value": 30
-    }
+        if len(parts) != 2:
+            print(f'Invalid parameter: {arg}')
+            continue
 
-    helmet = {
-        "name": "helmet",
-        "type": "equipable",
-        "quantity": 1,
-        "value": 50
-    }
+        name = parts[0]
 
-    inventory = {
-        "sword": sword,
-        "potion": potion,
-        "armor": armor,
-        "shield": shield,
-        "helmet": helmet
-    }
+        try:
+            quantity = int(parts[1])
+        except ValueError:
+            print(f'Invalid quantity: {arg}')
+            continue
 
-    biggest = 0
-    for name, item in inventory.items():
-        print(f"Item: {name}")
-        print(f" Type: {item['type']}")
-        print(f" Quantity: {item['quantity']}")
-        print(f" Value: {item['value']}\n")
-        if biggest < item['quantity']:
-            biggest = item['quantity']
-    smallest = biggest
-    for name, item in inventory.items():
-        if smallest > item['quantity']:
-            smallest = item['quantity']
-    print(f"Kind of items in inventory: {len(inventory)}")
-    print(f'The biggest amount of one item you have is {biggest}')
-    print(f'The smallest amount of one item you have is {smallest}')
+        if name in inventory:
+            print(f'Duplicate item: {name}')
+            continue
 
-    abundance = {
-        'low': [],
-        'mid': [],
-        'high': []
-    }
+        inventory[name] = quantity
 
-    for name, item in inventory.items():
-        if item["quantity"] >= 5:
-            abundance["high"].append(name)
-        elif item["quantity"] >= 2:
-            abundance["mid"].append(name)
-        elif item["quantity"] == 1:
-            abundance["low"].append(name)
-    print(f"\n{abundance}")
+    # 🔹 Mostrar inventário
+    print('Inventory:', inventory)
+
+    # 🔹 Lista de itens
+    items = list(inventory.keys())
+    print('Items:', items)
+
+    # 🔹 Total de quantidade
+    total = sum(inventory.values())
+    print('Total quantity:', total)
+
+    # 🔹 Percentagem de cada item
+    print('\nPercentages:')
+    for name, qty in inventory.items():
+        percent = (qty / total) * 100 if total > 0 else 0
+        print(f'{name}: {round(percent, 2)}%')
+
+    # 🔹 Mais e menos abundante (respeitando ordem)
+    max_item = None
+    min_item = None
+
+    for name in inventory:
+        if max_item is None or inventory[name] > inventory[max_item]:
+            max_item = name
+        if min_item is None or inventory[name] < inventory[min_item]:
+            min_item = name
+
+    print('\nMost abundant:', max_item)
+    print('Least abundant:', min_item)
+
+    # 🔹 Adicionar novo item
+    new_item = "gold"
+    new_quantity = 10
+
+    inventory[new_item] = new_quantity
+
+    print('\nUpdated inventory:', inventory)
 
 
 if __name__ == '__main__':
