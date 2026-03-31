@@ -6,6 +6,7 @@ class DataProcessor(abc.ABC):
     @abc.abstractmethod
     def process(self, data):
         pass
+
     @abc.abstractmethod
     def validate(self, data):
         pass
@@ -172,4 +173,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
