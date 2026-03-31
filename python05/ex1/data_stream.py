@@ -132,7 +132,6 @@ def main():
     poli()
 
 
-if __nresult = stream.process_batch(data)
-        print(result)ame__ == '__main__':
+if __name__ == '__main__':
 
     main()
