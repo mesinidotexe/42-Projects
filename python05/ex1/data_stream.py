@@ -102,6 +102,21 @@ def events_try():
 def poli():
     print('=== Polymorphic Stream Processing ===')
     print('Processing mixed stream types through unified interface...')
+    print()
+    sensor_data = [22.5, 65.5, 1013]
+    transaction_data = [100, -150, 75]
+    event_data = ['login', 42, 'logout']
+    process = [
+        (SensorStream(), sensor_data),
+        (TransactionStream(), transaction_data),
+        (EventStream(), event_data)
+    ]
+    for stream, data in process:
+        try:
+            result = stream.process_batch(data)
+            print(result)
+        except Exception as e:
+            print("Erro:", e)
 
 
 def main():
@@ -117,6 +132,7 @@ def main():
     poli()
 
 
-if __name__ == '__main__':
+if __nresult = stream.process_batch(data)
+        print(result)ame__ == '__main__':
 
     main()
