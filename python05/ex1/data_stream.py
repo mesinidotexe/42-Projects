@@ -85,7 +85,8 @@ def transaction_try():
     values = list(trasaction_batch.values())
     stream = TransactionStream()
     print(f'Processing transaction batch {trasaction_batch}')
-    print(f'Transaction analysis: {len(trasaction_batch)} operations, net flow: {stream.process_batch(values)}')
+    print(f'Transaction analysis: {len(trasaction_batch)} operations,'
+          f'net flow: {stream.process_batch(values)}')
 
 
 def events_try():
@@ -94,8 +95,9 @@ def events_try():
     print('Stream ID: EVENT_001, Type: System Events')
     events_batch = ['login', 42, 'logout']
     stream = EventStream()
+    error = stream.process_batch(events_batch)
     print(f'Processing event batch: {events_batch}')
-    print(f'Event analysis: {len(events_batch)} events, {stream.process_batch(events_batch)} error detected')
+    print(f'Event analysis: {len(events_batch)} events, {error} error detected')
 
 
 
