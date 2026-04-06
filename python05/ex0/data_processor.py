@@ -20,20 +20,22 @@ class DataProcessor(ABC):
 class NumericProcessor(DataProcessor):
 
     def validate(self, data: Any) -> bool:
-        for item in data:
-            try:
-                float(item)
-                return True
-            except ValueError:
-                return False
+        if isinstance(data, (int, float)):
+            return True
+        if isinstance(data, list):
+            return all(isinstance(x, (int, float)) for x in data)
+        return False
 
     def ingest(self, data: Any) -> None:
-        for item in data:
-            try:
-                str(item)
-            except Exception as e:
-                raise (f'The program found the error: {e}')
-        
+        self.data = ''
+        if isinstance(data, (int, float)):
+            self.data = str(data)
+        if isinstance(data, (list)):
+            for item in data:
+                self.data += item
+        if not self.validate(data):
+            raise ValueError('Got exception: Improper numeric data')
+
     def output(self):
         return super().output()
 
@@ -44,16 +46,16 @@ class TextProcessor(DataProcessor):
         for item in data:
             try:
                 str(item)
-                return True
             except Exception:
                 return False
+        return True
             
     def ingest(self, data: Any) -> None:
         for item in data:
             try:
                 str(item)
             except Exception as e:
-                raise (f'The program found the error: {e}')
+                raise (f'Got exception: Improper numeric data {e}')
     
     def output(self):
         return super().output()
@@ -68,14 +70,13 @@ class LogProcessor(DataProcessor):
         return True
             
     def ingest(self, data: Any) -> None:
-        try:
-            for chave, valor in data.items():
-                if not isinstance(chave, str):
-                    continue
-                if not isinstance(valor, str):
-                    continue
-        except Exception as e:
-             raise (f'The program found the error: {e}')
+        arr = ''
+        for chave, valor in data.items():
+            try:
+                arr += str(chave)
+                arr += str(valor)
+            except Exception as e:
+                raise e('try again')
         
     def output(self):
         return super().output()
@@ -84,14 +85,17 @@ class LogProcessor(DataProcessor):
 if __name__ == '__main__':
     print('=== Code Nexus - Data Processor ===\n')
     
-    print('Testing Numeric Processor...')
-    true_numeric = NumericProcessor()
-    true_try = true_numeric.validate('42')
-    print(f'Trying to validate input "42": {true_try}')
-    false_numeric = NumericProcessor()
-    false_try = false_numeric.validate('hello')
-    print(f'Trying to validate input "hello": {false_try}')
-    invalid_numeric = NumericProcessor()
-    invalid_try = invalid_numeric.ingest('foo')
-    print('Test invalid ingestion of string "foo" without prior validation:')
-    print(invalid_try)
+    try:
+        print('Testing Numeric Processor...')
+        true_numeric = NumericProcessor()
+        true_try = true_numeric.validate(42)
+        print(f'Trying to validate input "42": {true_try}')
+        false_numeric = NumericProcessor()
+        false_try = false_numeric.validate('hello')
+        print(f'Trying to validate input "hello": {false_try}')
+        invalid_numeric = NumericProcessor()
+        print('Test invalid ingestion of string "foo" without prior validation:')
+        print(invalid_numeric.ingest('foo'))
+        print('Processing data: [1, 2, 3, 4, 5]')
+    except Exception as e:
+        print(e)
