@@ -3,6 +3,10 @@ from typing import Any
 
 class DataProcessor(ABC):
     
+    def __init__(self):
+        self._data = []
+        self._counter = -1
+
     @abstractmethod
     def validate(self, data: Any) -> bool:
         pass
@@ -12,8 +16,13 @@ class DataProcessor(ABC):
         pass
 
     def output(self) -> tuple[int, str]:
-        if DataProcessor.validate(self):
-            return self.ingest
+        try:
+            value = self._data.pop(0)
+            self._counter += 1
+            return self._counter, value
+        except Exception as e:
+            if not self._data:
+                raise IndexError("No data available")
 
 
 class NumericProcessor(DataProcessor):
@@ -26,17 +35,16 @@ class NumericProcessor(DataProcessor):
         return False
 
     def ingest(self, data: Any) -> None:
-        self.data = ''
         if not self.validate(data):
-            raise ValueError('Got exception: Improper numeric data')
+            raise ValueError('Invalid numeric data')
         if isinstance(data, (int, float)):
-            self.data = str(data)
-        if isinstance(data, (list)):
+            self._data.append(str(data))
+        elif isinstance(data, list):
             for item in data:
-                self.data += str(item)
+                self._data.append(str(item))
 
     def output(self):
-        return 
+        return super().output()
 
 
 class TextProcessor(DataProcessor):
@@ -52,12 +60,15 @@ class TextProcessor(DataProcessor):
         return False
             
     def ingest(self, data: Any) -> None:
-        self.data = ''
-        for item in data:
-            try:
-                self.data += str(item)
-            except Exception as e:
-                raise (f'Got exception: Improper numeric data {e}')
+        if not self.validate(data):
+            raise ValueError('Invalid text data')
+
+        if isinstance(data, str):
+            self._data.append(data)
+
+        elif isinstance(data, list):
+            for item in data:
+                self._data.append(item)
     
     def output(self):
         return super().output()
@@ -66,20 +77,22 @@ class TextProcessor(DataProcessor):
 class LogProcessor(DataProcessor):
     
     def validate(self, data: Any) -> bool:
-        for item in data:
-            if not isinstance(item, dict):
-                return False
-        return True
-            
+        if isinstance(data, dict):
+            return True
+        if isinstance(data, list):
+            for item in data:
+                if not isinstance(item, dict):
+                    return False
+            return True
+        return False
+
     def ingest(self, data: Any) -> None:
-        arr = ''
-        for chave, valor in data.items():
-            try:
-                arr += str(chave)
-                arr += str(valor)
-            except Exception as e:
-                raise ValueError('try again') from e
-        
+        if isinstance(data, dict):
+            self._data.append(data.items())
+        if isinstance(data, list) and self.validate(data):
+            for item in data:
+                self._data.append(item)
+
     def output(self):
         return super().output()
         
@@ -106,7 +119,7 @@ def numeric_try():
     print('Extracting 3 values...')
     i = 0
     while i < 3:
-        print(f'Numeric value {i}: {data[i]}')
+        print(numeric_data.output())
         i += 1
 
 
@@ -119,13 +132,37 @@ def text_try():
     true_try = text.validate(data)
     print(f'Trying to validate input "{data}": {true_try}')
     print(f'Processing data {data}')
+    text_data = TextProcessor()
+    if text_data.validate(data):
+        text_data.ingest(data)
     print('Extracting 1 value...')
-    print(f'Text value 0: {data[0]}')
+    print(text_data.output())
 
+
+def log_try():
+    print('Testing Log Processor...')
+    log = LogProcessor()
+    false_log = log.validate('hello')
+    print(f'Trying to validate input "Hello": {false_log}')
+    data = [
+        {'log_level': 'NOTICE', 'log_message': 'Connection to server'},
+        {'log_level': 'ERROR', 'log_message': 'Unauthorized access!!'}
+    ]
+    true_log = log.validate(data)
+    print(f'Trying to validate input "{data}": {true_log}')
+    print('Extracting 2 values...')
+    log_data = LogProcessor()
+    if log_data.validate(data):
+        log_data.ingest(data)
+    i = 0
+    while i < 2:
+        print(log_data.output())
+        i += 1
 
 if __name__ == '__main__':
-
     print('=== Code Nexus - Data Processor ===\n')
     numeric_try()
-    print('')
+    print()
     text_try()
+    print()
+    log_try()
