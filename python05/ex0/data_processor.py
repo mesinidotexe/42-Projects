@@ -99,64 +99,53 @@ class LogProcessor(DataProcessor):
 
 def numeric_try():
     print('Testing Numeric Processor...')
-    true_numeric = NumericProcessor()
-    true_try = true_numeric.validate(42)
-    print(f'Trying to validate input "42": {true_try}')
-    false_numeric = NumericProcessor()
-    false_try = false_numeric.validate('hello')
-    print(f'Trying to validate input "hello": {false_try}')
-    invalid_numeric = NumericProcessor()
+    numeric = NumericProcessor()
+    print(f'Trying to validate input "42": {numeric.validate(42)}')
+    print(f'Trying to validate input "hello": {numeric.validate('hello')}')
     print('Test invalid ingestion of string "foo" without prior validation:')
     try:
-        invalid_numeric.ingest('foo') 
+        numeric.ingest('foo') 
     except ValueError as e:
         print(e)
-    numeric_data = NumericProcessor()
     data = [1, 2, 3, 4, 5]
-    if numeric_data.validate(data):
-        numeric_data.ingest(data)
+    if numeric.validate(data):
+        numeric.ingest(data)
     print('Processing data: [1, 2, 3, 4, 5]')
     print('Extracting 3 values...')
     i = 0
     while i < 3:
-        print(numeric_data.output())
+        print(numeric.output())
         i += 1
 
 
 def text_try():
     print('Testing Text Processor...')
     text = TextProcessor()
-    false_try = text.validate(42)
-    print(f'Trying to validate input "42": {false_try}')
+    print(f'Trying to validate input "42": {text.validate(42)}')
     data = ['Hello', 'Nexus', 'World']
-    true_try = text.validate(data)
-    print(f'Trying to validate input "{data}": {true_try}')
+    print(f'Trying to validate input "{data}": {text.validate(data)}')
     print(f'Processing data {data}')
-    text_data = TextProcessor()
-    if text_data.validate(data):
-        text_data.ingest(data)
+    if text.validate(data):
+        text.ingest(data)
     print('Extracting 1 value...')
-    print(text_data.output())
+    print(text.output())
 
 
 def log_try():
     print('Testing Log Processor...')
     log = LogProcessor()
-    false_log = log.validate('hello')
-    print(f'Trying to validate input "Hello": {false_log}')
+    print(f'Trying to validate input "Hello": {log.validate('hello')}')
     data = [
         {'log_level': 'NOTICE', 'log_message': 'Connection to server'},
         {'log_level': 'ERROR', 'log_message': 'Unauthorized access!!'}
     ]
-    true_log = log.validate(data)
-    print(f'Trying to validate input "{data}": {true_log}')
+    print(f'Trying to validate input "{data}": {log.validate(data)}')
     print('Extracting 2 values...')
-    log_data = LogProcessor()
-    if log_data.validate(data):
-        log_data.ingest(data)
+    if log.validate(data):
+        log.ingest(data)
     i = 0
     while i < 2:
-        print(log_data.output())
+        print(log.output())
         i += 1
 
 if __name__ == '__main__':
