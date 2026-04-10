@@ -1,4 +1,4 @@
-from ex0.data_processor import DataProcessor, NumericProcessor
+from ex0.data_processor import DataProcessor, NumericProcessor, TextProcessor, LogProcessor
 import typing
 
 class DataStream():
@@ -9,6 +9,7 @@ class DataStream():
 
     def register_processor(self, proc: DataProcessor) -> None:
         self.procs.append(proc)
+        self.count += 1
 
 
     def process_stream(self, stream: list[typing.Any]) -> None:
@@ -26,7 +27,10 @@ class DataStream():
 
     def print_processors_stats(self) -> None:
         for proc in self.procs:
-            print(f"Processor: {proc.__class__.__name__}")
+            print(f'Processor: {proc.__class__.__name__}')
+            items_processed = getattr(proc, '_counter', None)
+            print(f'Items preocessed: {items_processed}\n')
+        print(f'Total processors: {self.count}')
 
 
 def numeric_process():
@@ -41,8 +45,26 @@ def numeric_process():
         ['Hi', 'five']
         ]
     print(f'Send first batch of data on stream {data}\n')
-    numeric_processor = NumericProcessor()
-    data_stream.register_processor(numeric_processor)
+    data_stream.register_processor(NumericProcessor())
+    data_stream.process_stream(data)
+    data_stream.print_processors_stats()
+
+
+def other_data():
+    print('Registering other data processors')
+    data = [
+        'Hello world',
+        [3.14, -1, 2.71],
+        [{'log_level': 'WARNING', 'log_message': 'Telnet access! Use ssh instead'},
+        {'log_level': 'INFO', 'log_message': 'User wil is connected'}],
+        42,
+        ['Hi', 'five']
+        ]
+    data_stream = DataStream()
+    data_stream.register_processor(NumericProcessor())
+    data_stream.register_processor(TextProcessor())
+    data_stream.register_processor(LogProcessor())
+    print('== DataStream statistics ==')
     data_stream.process_stream(data)
     data_stream.print_processors_stats()
 
@@ -54,6 +76,9 @@ def main():
     data = []
     data_stream.process_stream(data)
     numeric_process()
+    print()
+    other_data()
+    
 
 
 if __name__ == '__main__':

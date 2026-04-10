@@ -35,13 +35,16 @@ class NumericProcessor(DataProcessor):
         return False
 
     def ingest(self, data: Any) -> None:
+        self._counter += 1
         if not self.validate(data):
             raise ValueError('Invalid numeric data')
         if isinstance(data, (int, float)):
             self._data.append(str(data))
+            self._counter += 1
         elif isinstance(data, list):
             for item in data:
                 self._data.append(str(item))
+                self._counter
 
     def output(self):
         return super().output()
@@ -60,15 +63,18 @@ class TextProcessor(DataProcessor):
         return False
             
     def ingest(self, data: Any) -> None:
+        self._counter += 1
         if not self.validate(data):
             raise ValueError('Invalid text data')
 
         if isinstance(data, str):
             self._data.append(data)
+            self._counter += 1
 
         elif isinstance(data, list):
             for item in data:
                 self._data.append(item)
+                self._counter += 1
     
     def output(self):
         return super().output()
@@ -87,11 +93,13 @@ class LogProcessor(DataProcessor):
         return False
 
     def ingest(self, data: Any) -> None:
+        self._counter += 1
         if isinstance(data, dict):
             self._data.append(data.items())
         if isinstance(data, list) and self.validate(data):
             for item in data:
                 self._data.append(item)
+                self._counter += 1
 
     def output(self):
         return super().output()
