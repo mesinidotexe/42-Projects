@@ -19,7 +19,7 @@ class DataProcessor(ABC):
         try:
             value = self._data.pop(0)
             self._counter += 1
-            return self._counter, value
+            return (self._counter, value)
         except Exception as e:
             if not self._data:
                 raise IndexError("No data available")
