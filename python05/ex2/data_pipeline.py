@@ -13,12 +13,11 @@ class CSVExport():
 
     def process_output(self, data: list[tuple[int, str]]) -> None:
         self.cvs = ''
-        for id, value in data:
-            if isinstance(value, str):
-                self.cvs += str(id)
-                self.cvs += ','
-                self.cvs += value
-                self.cvs += '\n'
+        for _, value in data:
+            for item in value:
+                self.cvs += str(item)
+            self.cvs += ','
+        self.cvs += '\n'
         print('CVS output')
         print(self.cvs)
 
@@ -27,9 +26,15 @@ class DataStream(BaseDataStream):
     def output_pipeline(self, nb: int, plugin: ExportPlugin) -> None:
         collected = []
         for processor in self.procs:
-            data = list(processor.output())
-            collected.append(data)
-        plugin.process_output(collected)
+            i = 0
+            while i < nb:
+                try:
+                    result = processor.output()
+                    collected.append(result)
+                    i += 1
+                except IndexError:
+                    break
+            plugin.process_output(collected)
 
 
 def cvs_try():
