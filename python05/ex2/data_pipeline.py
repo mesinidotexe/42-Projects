@@ -12,20 +12,36 @@ class ExportPlugin(Protocol):
 class CSVExport():
 
     def process_output(self, data: list[tuple[int, str]]) -> None:
-        self.cvs = ''
+        self.csv = ''
         for _, value in data:
             for item in value:
-                self.cvs += str(item)
-            self.cvs += ','
-        self.cvs += '\n'
-        print('CVS output')
-        print(self.cvs)
+                self.csv += str(item)
+            self.csv += ','
+        self.csv += '\n'
+        print('CSV output')
+        print(self.csv)
+
+
+class JSONExport():
+
+    def process_output(self, data: list[tuple[int, str]]) -> None:
+        i = 1
+        self.json = {}
+        for _, values in data:
+            self.json[f'item_{i}'] = values
+            i += 1
+        print('JSON Output')
+        print(self.json)
+        print()
+            
+
+
 
 class DataStream(BaseDataStream):
 
     def output_pipeline(self, nb: int, plugin: ExportPlugin) -> None:
-        collected = []
         for processor in self.procs:
+            collected = []
             i = 0
             while i < nb:
                 try:
@@ -37,25 +53,29 @@ class DataStream(BaseDataStream):
             plugin.process_output(collected)
 
 
-def cvs_try():
+def csv_try(data):
     stream = DataStream()
     stream.register_processor(NumericProcessor())
     stream.register_processor(TextProcessor())
     stream.register_processor(LogProcessor())
-    data = [
-        'Hello world',
-        [3.14, -1, 2.71],
-        [{'log_level': 'WARNING', 'log_message': 'Telnet access! Use ssh instead'},
-        {'log_level': 'INFO', 'log_message': 'User wil is connected'}],
-        42,
-        ['Hi', 'five']
-        ]
     stream.process_stream(data)
     plugin = CSVExport()
     stream.print_processors_stats()
     print('\n')
     stream.output_pipeline(3, plugin)
 
+
+
+def json_try(new_data):
+    stream = DataStream()
+    stream.register_processor(NumericProcessor())
+    stream.register_processor(TextProcessor())
+    stream.register_processor(LogProcessor())
+    stream.process_stream(new_data)
+    plugin = JSONExport()
+    stream.print_processors_stats()
+    print('\n')
+    stream.output_pipeline(7, plugin)
 
 
 def main():
@@ -74,8 +94,19 @@ def main():
         42,
         ['Hi', 'five']
         ]
-    print(f'Send first batch of data on stream: {data}')
-    cvs_try()
+    print(f'Send first batch of data on stream: {data}\n')
+    csv_try(data)
+    new_data = [
+        21,
+        ['I love AI', 'LLMs are wonderful', 'Stay healthy'],
+        [{'log_level': ' ERROR', 'log_message': '500 server crash'},
+        {'log_level': 'NOTICE', 'log_message': 'Certificate expires in 10 days'}],
+        [32, 42, 64, 84, 128, 168],
+        'World hello'
+        ]
+    print('\n')
+    print(f'Send another batch of data: {new_data}\n')
+    json_try(new_data)
     
     
     

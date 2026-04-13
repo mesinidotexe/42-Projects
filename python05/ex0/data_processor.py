@@ -93,13 +93,17 @@ class LogProcessor(DataProcessor):
         return False
 
     def ingest(self, data: Any) -> None:
-        self._counter += 1
+        if not self.validate(data):
+            raise ValueError('Invalid log data')
         if isinstance(data, dict):
-            self._data.append(data.items())
-        if isinstance(data, list) and self.validate(data):
+            level = data.get('log_level')
+            message = data.get('log_message')
+            self._data.append(f"{level}: {message}")
+        elif isinstance(data, list):
             for item in data:
-                self._data.append(item)
-                self._counter += 1
+                level = item.get('log_level')
+                message = item.get('log_message')
+                self._data.append(f"{level}: {message}")
 
     def output(self):
         return super().output()
@@ -109,7 +113,7 @@ def numeric_try():
     print('Testing Numeric Processor...')
     numeric = NumericProcessor()
     print(f'Trying to validate input "42": {numeric.validate(42)}')
-    print(f'Trying to validate input "hello": {numeric.validate('hello')}')
+    print(f'Trying to validate input "hello": {numeric.validate("hello")}')
     print('Test invalid ingestion of string "foo" without prior validation:')
     try:
         numeric.ingest('foo') 
@@ -142,7 +146,7 @@ def text_try():
 def log_try():
     print('Testing Log Processor...')
     log = LogProcessor()
-    print(f'Trying to validate input "Hello": {log.validate('hello')}')
+    print(f'Trying to validate input "Hello": {log.validate("hello")}')
     data = [
         {'log_level': 'NOTICE', 'log_message': 'Connection to server'},
         {'log_level': 'ERROR', 'log_message': 'Unauthorized access!!'}
