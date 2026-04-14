@@ -1,4 +1,4 @@
-from ex0.data_processor import DataProcessor, NumericProcessor, TextProcessor, LogProcessor
+from ex0.data_processor import NumericProcessor, TextProcessor, LogProcessor
 from ex1.data_stream import DataStream as BaseDataStream
 from typing import Protocol
 
@@ -33,8 +33,6 @@ class JSONExport():
         print('JSON Output')
         print(self.json)
         print()
-            
-
 
 
 class DataStream(BaseDataStream):
@@ -65,7 +63,6 @@ def csv_try(data):
     stream.output_pipeline(3, plugin)
 
 
-
 def json_try(new_data):
     stream = DataStream()
     stream.register_processor(NumericProcessor())
@@ -89,8 +86,9 @@ def main():
     data = [
         'Hello world',
         [3.14, -1, 2.71],
-        [{'log_level': 'WARNING', 'log_message': 'Telnet access! Use ssh instead'},
-        {'log_level': 'INFO', 'log_message': 'User wil is connected'}],
+        [{'log_level': 'WARNING', 'log_message': 'Telnet access! '
+          'Use ssh instead'},
+         {'log_level': 'INFO', 'log_message': 'User wil is connected'}],
         42,
         ['Hi', 'five']
         ]
@@ -100,15 +98,14 @@ def main():
         21,
         ['I love AI', 'LLMs are wonderful', 'Stay healthy'],
         [{'log_level': ' ERROR', 'log_message': '500 server crash'},
-        {'log_level': 'NOTICE', 'log_message': 'Certificate expires in 10 days'}],
+        {'log_level': 'NOTICE', 'log_message': 
+         'Certificate expires in 10 days'}],
         [32, 42, 64, 84, 128, 168],
         'World hello'
         ]
     print('\n')
     print(f'Send another batch of data: {new_data}\n')
     json_try(new_data)
-    
-    
     
 
 if __name__ == '__main__':

@@ -1,6 +1,7 @@
 from ex0.data_processor import DataProcessor, NumericProcessor, TextProcessor, LogProcessor
 import typing
 
+
 class DataStream():
 
     def __init__(self):
@@ -23,7 +24,8 @@ class DataStream():
                     found = True
                     break
             if not found:
-                    print(f'DataStream error - Cant process element in stream: {data}')
+                    print(f'DataStream error - Cant process element in '
+                          f'stream: {data}')
 
     def print_processors_stats(self) -> None:
         for proc in self.procs:
@@ -78,7 +80,6 @@ def main():
     numeric_process()
     print()
     other_data()
-    
 
 
 if __name__ == '__main__':

@@ -1,8 +1,9 @@
 from abc import abstractmethod, ABC
 from typing import Any
 
+
 class DataProcessor(ABC):
-    
+
     def __init__(self):
         self._data = []
         self._counter = -1
@@ -51,7 +52,7 @@ class NumericProcessor(DataProcessor):
 
 
 class TextProcessor(DataProcessor):
-    
+
     def validate(self, data: Any) -> bool:
         if isinstance (data, str):
                 return True
@@ -61,7 +62,7 @@ class TextProcessor(DataProcessor):
                     return False
             return True
         return False
-            
+
     def ingest(self, data: Any) -> None:
         self._counter += 1
         if not self.validate(data):
@@ -81,7 +82,7 @@ class TextProcessor(DataProcessor):
 
 
 class LogProcessor(DataProcessor):
-    
+
     def validate(self, data: Any) -> bool:
         if isinstance(data, dict):
             return True
@@ -107,7 +108,7 @@ class LogProcessor(DataProcessor):
 
     def output(self):
         return super().output()
-        
+
 
 def numeric_try():
     print('Testing Numeric Processor...')
@@ -159,6 +160,7 @@ def log_try():
     while i < 2:
         print(log.output())
         i += 1
+
 
 if __name__ == '__main__':
     print('=== Code Nexus - Data Processor ===\n')
