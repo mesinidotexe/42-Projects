@@ -1,4 +1,5 @@
-from ex0.data_processor import DataProcessor, NumericProcessor, TextProcessor, LogProcessor
+from ex0.data_processor import DataProcessor, NumericProcessor, TextProcessor
+from ex0.data_processor import LogProcessor
 import typing
 
 
@@ -12,7 +13,6 @@ class DataStream():
         self.procs.append(proc)
         self.count += 1
 
-
     def process_stream(self, stream: list[typing.Any]) -> None:
         if not stream:
             print('No processor found, no data')
@@ -24,8 +24,8 @@ class DataStream():
                     found = True
                     break
             if not found:
-                    print(f'DataStream error - Cant process element in '
-                          f'stream: {data}')
+                print(f'DataStream error - Cant process element in '
+                      f'stream: {data}')
 
     def print_processors_stats(self) -> None:
         for proc in self.procs:
@@ -41,8 +41,9 @@ def numeric_process():
     data = [
         'Hello world',
         [3.14, -1, 2.71],
-        [{'log_level': 'WARNING', 'log_message': 'Telnet access! Use ssh instead'},
-        {'log_level': 'INFO', 'log_message': 'User wil is connected'}],
+        [{'log_level': 'WARNING', 'log_message':
+          'Telnet access! Use ssh instead'},
+         {'log_level': 'INFO', 'log_message': 'User wil is connected'}],
         42,
         ['Hi', 'five']
         ]
@@ -57,8 +58,9 @@ def other_data():
     data = [
         'Hello world',
         [3.14, -1, 2.71],
-        [{'log_level': 'WARNING', 'log_message': 'Telnet access! Use ssh instead'},
-        {'log_level': 'INFO', 'log_message': 'User wil is connected'}],
+        [{'log_level': 'WARNING', 'log_message':
+          'Telnet access! Use ssh instead'},
+         {'log_level': 'INFO', 'log_message': 'User wil is connected'}],
         42,
         ['Hi', 'five']
         ]

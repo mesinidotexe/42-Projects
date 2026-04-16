@@ -21,7 +21,7 @@ class DataProcessor(ABC):
             value = self._data.pop(0)
             self._counter += 1
             return (self._counter, value)
-        except Exception as e:
+        except Exception:
             if not self._data:
                 raise IndexError("No data available")
 
@@ -54,8 +54,8 @@ class NumericProcessor(DataProcessor):
 class TextProcessor(DataProcessor):
 
     def validate(self, data: Any) -> bool:
-        if isinstance (data, str):
-                return True
+        if isinstance(data, str):
+            return True
         if isinstance(data, list):
             for item in data:
                 if not isinstance(item, str):
@@ -76,7 +76,7 @@ class TextProcessor(DataProcessor):
             for item in data:
                 self._data.append(item)
                 self._counter += 1
-    
+
     def output(self):
         return super().output()
 
@@ -117,7 +117,7 @@ def numeric_try():
     print(f'Trying to validate input "hello": {numeric.validate("hello")}')
     print('Test invalid ingestion of string "foo" without prior validation:')
     try:
-        numeric.ingest('foo') 
+        numeric.ingest('foo')
     except ValueError as e:
         print(e)
     data = [1, 2, 3, 4, 5]
