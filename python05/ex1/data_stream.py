@@ -30,7 +30,7 @@ class DataStream():
     def print_processors_stats(self) -> None:
         for proc in self.procs:
             print(f'Processor: {proc.__class__.__name__}')
-            items_processed = getattr(proc, '_counter', None)
+            items_processed = getattr(proc, 'counter', None)
             print(f'Items preocessed: {items_processed}\n')
         print(f'Total processors: {self.count}')
 

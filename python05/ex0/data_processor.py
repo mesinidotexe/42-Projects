@@ -6,7 +6,7 @@ class DataProcessor(ABC):
 
     def __init__(self):
         self._data = []
-        self._counter = -1
+        self.counter = 0
 
     @abstractmethod
     def validate(self, data: Any) -> bool:
@@ -19,8 +19,8 @@ class DataProcessor(ABC):
     def output(self) -> tuple[int, str]:
         try:
             value = self._data.pop(0)
-            self._counter += 1
-            return (self._counter, value)
+            self.counter += 1
+            return ((self.counter - 1), value)
         except Exception:
             if not self._data:
                 raise IndexError("No data available")
@@ -36,16 +36,14 @@ class NumericProcessor(DataProcessor):
         return False
 
     def ingest(self, data: Any) -> None:
-        self._counter += 1
         if not self.validate(data):
             raise ValueError('Invalid numeric data')
         if isinstance(data, (int, float)):
             self._data.append(str(data))
-            self._counter += 1
         elif isinstance(data, list):
             for item in data:
                 self._data.append(str(item))
-                self._counter
+        self.counter += 1
 
     def output(self):
         return super().output()
@@ -64,18 +62,16 @@ class TextProcessor(DataProcessor):
         return False
 
     def ingest(self, data: Any) -> None:
-        self._counter += 1
         if not self.validate(data):
             raise ValueError('Invalid text data')
 
         if isinstance(data, str):
             self._data.append(data)
-            self._counter += 1
 
         elif isinstance(data, list):
             for item in data:
                 self._data.append(item)
-                self._counter += 1
+        self.counter += 1
 
     def output(self):
         return super().output()
@@ -105,6 +101,7 @@ class LogProcessor(DataProcessor):
                 level = item.get('log_level')
                 message = item.get('log_message')
                 self._data.append(f"{level}: {message}")
+        self.counter += 1
 
     def output(self):
         return super().output()
