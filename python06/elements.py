@@ -1,5 +1,5 @@
 def create_fire():
-    print('Fire element created')
-    
+    return 'Fire element created'
+
 def create_water():
-    print('Water element created')
+    return 'Water element created'
