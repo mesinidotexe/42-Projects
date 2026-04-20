@@ -29,6 +29,6 @@ def fight(type1, type2):
 if __name__ == '__main__':
     test_factory(FlameFactory)
     print()
-    test_factory(AquaFactory)    
+    test_factory(AquaFactory)
     print()
     fight(FlameFactory, AquaFactory)

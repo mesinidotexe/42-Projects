@@ -2,12 +2,13 @@ from abc import ABC, abstractmethod
 from ex0.creature import Flameling, Pyrodon
 from ex0.creature import Aquabub, Torragon
 
+
 class CreatureFactory(ABC):
 
     @abstractmethod
     def create_base(self):
         pass
-    
+
     @abstractmethod
     def create_evolved(self):
         pass
