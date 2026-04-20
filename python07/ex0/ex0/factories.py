@@ -1,48 +1,31 @@
-from .creature import Creature
 from abc import ABC, abstractmethod
-
-class Flameling(Creature):
-
-    def __init__(self, name):
-        self.name = name
-
-    def attack(self):
-        return f'{self.name} uses Ember!'
-    
-
-class Pyrodon(Creature):
-
-    def __init__(self, name):
-        self.name = name
-
-    def attack(self):
-        return f'{self.name} uses Flamethrower!'
-    
-
-class Aquabub(Creature):
-
-    def __init__(self, name):
-        self.name = name
-
-    def attack(self):
-        return f'{self.name} uses Water Gun!'
-    
-
-class Torragon(Creature):
-
-    def __init__(self, name):
-        self.name = name
-
-    def attack(self):
-        return f'{self.name} uses Hydro Pump!'
-    
+from ex0.creature import Flameling, Pyrodon
+from ex0.creature import Aquabub, Torragon
 
 class CreatureFactory(ABC):
 
     @abstractmethod
-    def create_base():
+    def create_base(self):
         pass
     
     @abstractmethod
-    def create_evolved():
+    def create_evolved(self):
         pass
+
+
+class FlameFactory(CreatureFactory):
+
+    def create_base(self):
+        return Flameling('Flameling', 'fire')
+
+    def create_evolved(self):
+        return Pyrodon('Pyrodon', 'fire')
+
+
+class AquaFactory(CreatureFactory):
+
+    def create_base(self):
+        return Aquabub('Aquabub', 'water')
+
+    def create_evolved(self):
+        return Torragon('Torragon', 'water')
