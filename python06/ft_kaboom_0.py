@@ -1,4 +1,4 @@
-import alchemy.grimoire.dark_spellbook
+import alchemy.grimoire.light_spellbook
 
 
 if __name__ == '__main__':
