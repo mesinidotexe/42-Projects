@@ -1,4 +1,4 @@
-from alchemy import create_air, heal
+from alchemy import create_air
 
 
 if __name__ == '__main__':
