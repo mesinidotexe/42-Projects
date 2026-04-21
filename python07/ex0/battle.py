@@ -1,9 +1,9 @@
 from ex0.factories import AquaFactory, FlameFactory
 
 
-def test_factory(factory_object):
+def test_factory(factory_class):
     print('Testing factory')
-    factory = factory_object()
+    factory = factory_class()
     base = factory.create_base()
     print(base.describe())
     print(base.attack())

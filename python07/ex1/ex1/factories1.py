@@ -2,6 +2,7 @@ from .capabilities import Sproutling, Bloomelle
 from .capabilities import Shiftling, Morphagon
 from ex0.ex0.factories import CreatureFactory
 
+
 class HealingCreatureFactory(CreatureFactory):
 
     def create_base(self):
@@ -15,6 +16,6 @@ class TransformCreatureFactory(CreatureFactory):
 
     def create_base(self):
         return Shiftling('Shiftling', 'normal')
-    
+
     def create_evolved(self):
         return Morphagon('Morphagon', 'normal/dragon')

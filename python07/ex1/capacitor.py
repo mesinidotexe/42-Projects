@@ -1,4 +1,4 @@
-from ex1.ex1.factories import HealingCreatureFactory, TransformCreatureFactory
+from ex1.ex1.factories1 import HealingCreatureFactory, TransformCreatureFactory
 
 
 def healing():
@@ -34,7 +34,7 @@ def transforming():
 
 
 if __name__ == '__main__':
-    #run with python3 -m ex1.capacitor from root
+    # run with python3 -m ex1.capacitor from root
     healing()
     print()
     transforming()
