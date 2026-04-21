@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from ex1.ex1.capabilities import HealCapability, TransformCapability
+# from ex1.ex1.capabilities import HealCapability, TransformCapability
 
 
 class BattleStrategy(ABC):
@@ -28,20 +28,28 @@ class NormalStrategy(BattleStrategy):
 class AggressiveStrategy(BattleStrategy):
 
     def is_valid(self, creature) -> bool:
-        return isinstance(creature, TransformCapability)
+        return hasattr(creature, 'transform')
 
     def act(self, creature):
         if not self.is_valid(creature):
             raise Exception('invalid Creature for this aggressive strategy')
-        return creature.attack()
+        return (
+            creature.attack() + '\n' +
+            creature.transform() + '\n' +
+            creature.transformed_attack() + '\n' +
+            creature.revert()
+            )
 
 
 class DefensiveStrategy(BattleStrategy):
 
     def is_valid(self, creature) -> bool:
-        return isinstance(creature, HealCapability)
+        return hasattr(creature, 'heal')
 
     def act(self, creature):
         if not self.is_valid(creature):
             raise Exception('invalid Creature for this aggressive strategy')
-        return creature.attack()
+        return (
+            creature.attack() + '\n' +
+            creature.heal()
+        )

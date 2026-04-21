@@ -12,21 +12,28 @@ def tornament(opponents: List):
     print(f'{len(opponents)} opponents involved\n')
     print('* Battle *')
 
-    first = True
-    for opponent, _ in opponents:
-        print(opponent.describe())
-        if first:
-            print('vs')
-        else:
-            print('now fight!')
-        first = False
+    fac1, strategy1 = opponents[0]
+    fac2, strategy2 = opponents[1]
 
-        for opponent, strategy in opponents:
-            try:
-                print(strategy.act(opponent))
-            except Exception as e:
-                print(e)
-                return
+    poke1 = fac1.create_base()
+    poke2 = fac2.create_base()
+
+    print(f'{poke1.name} vs {poke2.name}')
+    print(poke1.describe())
+    print(poke2.describe())
+
+    try:
+        print(strategy1.act(poke1))
+        if fac1 is HealingCreatureFactory:
+            print(poke1.heal())
+    except Exception as e:
+        print(e)
+        return
+    try:
+        print(strategy2.act(poke2))
+    except Exception as e:
+        print(e)
+        return
 
 
 if __name__ == '__main__':
@@ -36,21 +43,14 @@ if __name__ == '__main__':
     defensive = DefensiveStrategy()
 
     flame_fac = FlameFactory()
-    flame_obj_base = flame_fac.create_base()
-
     water_fac = AquaFactory()
-    water_obj_base = water_fac.create_base()
-
     heal_fac = HealingCreatureFactory()
-    heal_obj_base = heal_fac.create_base()
-
     transform_fac = TransformCreatureFactory()
-    transform_obj_base = transform_fac.create_base()
 
     print('Tournament 0 (basic)')
     first_fight = [
-        (flame_obj_base, normal),
-        (heal_obj_base, defensive)
+        (flame_fac, normal),
+        (transform_fac, normal)
     ]
     tornament(first_fight)
 
@@ -58,16 +58,43 @@ if __name__ == '__main__':
 
     print('Tournament 1 (error)')
     second_fight = [
-        (flame_obj_base, aggresive),
-        (heal_obj_base, defensive)
+        (water_fac, aggresive),
+        (heal_fac, defensive)
     ]
     tornament(second_fight)
 
     print()
 
-    print('tournament 2 (aggressive)')
+    print('Tournament 2')
     third_fight = [
-        (transform_obj_base, aggresive),
-        (heal_obj_base, defensive)
+        (flame_fac, normal),
+        (water_fac, normal)
     ]
     tornament(third_fight)
+
+    print()
+
+    print('Tournament 3')
+    forth_fight = [
+        (flame_fac, normal),
+        (heal_fac, defensive)
+    ]
+    tornament(forth_fight)
+
+    print()
+
+    print('Tournament 4')
+    fifth_fight = [
+        (transform_fac, normal),
+        (water_fac, aggresive)
+    ]
+    tornament(fifth_fight)
+
+    print()
+
+    print('Tournament 5')
+    sixth_fight = [
+        (transform_fac, normal),
+        (heal_fac, defensive)
+    ]
+    tornament(sixth_fight)
