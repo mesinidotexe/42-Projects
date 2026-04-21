@@ -1,0 +1,86 @@
+from abc import ABC, abstractmethod
+from ex0.ex0.creature import Creature
+
+
+class HealCapability(ABC):
+
+    def __init__(self, name):
+        self.name = name
+
+    @abstractmethod
+    def heal(self):
+        pass        
+
+
+class TransformCapability(ABC):
+
+    def __init__(self, name):
+        self.name = name
+
+    @abstractmethod
+    def transform(self):
+        return f'{self.name} shifts into a sharper form!'
+
+    @abstractmethod
+    def revert(self):
+        return f'{self.name} returns to normal.'
+    
+
+class Sproutling(Creature, HealCapability):
+
+    def __init__(self, name, type):
+        super().__init__(name, type)
+    
+    def attack(self):
+        return f'{self.name} uses Vine Whip!'
+    
+    def heal(self):
+        return f'{self.name} heals itself for a small amount'
+    
+
+class Bloomelle(Creature, HealCapability):
+
+    def __init__(self, name, type):
+        super().__init__(name, type)
+
+    def attack(self):
+        return f'{self.name} uses Petal Dance!'
+    
+    def heal(self):
+        return f'{self.name} heals itself and others for a large amount'
+    
+
+class Shiftling(Creature, TransformCapability):
+
+    def __init__(self, name, type):
+        super().__init__(name, type)
+
+    def attack(self):
+        return f'{self.name} attacks normally'
+    
+    def transform(self):
+        return f'{self.name} shifts into a sharper form!'
+    
+    def transformed_attack(self):
+        return f'{self.name} performs a boosted strike!'
+    
+    def revert(self):
+        return f'{self.name} returns to normal.'
+
+
+class Morphagon(Creature, TransformCapability):
+
+    def __init__(self, name, type):
+        super().__init__(name, type)
+
+    def attack(self):
+        return f'{self.name} attacks normally'
+
+    def transform(self):
+        return f'{self.name} morphs into a dragonic battle form!'
+    
+    def transformed_attack(self):
+        return f'{self.name} unleashes a devastating morph strike!'
+    
+    def revert(self):
+        return f'{self.name} stabilizes its form.'
