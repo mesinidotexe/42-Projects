@@ -1,5 +1,6 @@
 from ex1.ex1.factories import HealingCreatureFactory, TransformCreatureFactory
 
+
 def healing():
     print('Testing Creature with healing capability')
     heal = HealingCreatureFactory()
@@ -31,7 +32,9 @@ def transforming():
     print(evolved.transformed_attack())
     print(evolved.revert())
 
+
 if __name__ == '__main__':
+    #run with python3 -m ex1.capacitor from root
     healing()
     print()
     transforming()
