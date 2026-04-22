@@ -1,4 +1,4 @@
-from ex0.factories import AquaFactory, FlameFactory
+from ex0.ex0.factories import AquaFactory, FlameFactory
 
 
 def test_factory(factory_class):

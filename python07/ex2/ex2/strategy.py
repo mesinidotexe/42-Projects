@@ -5,11 +5,11 @@ from abc import ABC, abstractmethod
 class BattleStrategy(ABC):
 
     @abstractmethod
-    def is_valid(self) -> bool:
+    def is_valid(self, creature) -> bool:
         pass
 
     @abstractmethod
-    def act(self):
+    def act(self, creature):
         pass
 
 
@@ -18,6 +18,7 @@ class NormalStrategy(BattleStrategy):
     def is_valid(self, creature) -> bool:
         if creature is not None:
             return True
+        return False
 
     def act(self, creature):
         if not self.is_valid(creature):
