@@ -35,7 +35,7 @@ def dependencies():
     return True
 
 
-if __name__ =='__main__':
+if __name__ == '__main__':
     # pip install -r requirements.txt
     # ou
     # poetry install
@@ -55,6 +55,6 @@ if __name__ =='__main__':
         plt.plot(df["values"])
         plt.savefig("matrix_analysis.png")
         print()
-        
+
         print('Analysis complete!')
         print('Results saved to: matrix_analysis.png')

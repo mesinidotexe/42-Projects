@@ -25,7 +25,7 @@ if __name__ == '__main__':
         zion_network = os.getenv('ZION_NETWORK')
         print(f'Zion Network: {zion_network}')
         print()
-        
+
         print('[OK] No hardcoded secrets detected')
         print('[OK] .env file properly configured')
         print('[OK] Production overrides available')
