@@ -5,7 +5,6 @@ if __name__ == '__main__':
     print()
     print('ORACLE STATUS: Reading the matrix')
     print()
-    print(os.environ)
 
     try:
         from dotenv import load_dotenv
