@@ -26,15 +26,15 @@ def mage_stats(mages: list[dict]) -> dict:
 
 def main():
     artifacts = [{'name': 'Fire Staff', 'power': 114, 'type': 'armor'},
-                 {'name': 'Water Chalice', 'power': 113, 'type': 'focus'},
-                 {'name': 'Crystal Orb', 'power': 95, 'type': 'weapon'},
-                 {'name': 'Light Prism', 'power': 63, 'type': 'relic'}]
+                {'name': 'Water Chalice', 'power': 113, 'type': 'focus'},
+                {'name': 'Crystal Orb', 'power': 95, 'type': 'weapon'},
+                {'name': 'Light Prism', 'power': 63, 'type': 'relic'}]
 
     mages = [{'name': 'Sage', 'power': 78, 'element': 'light'},
-             {'name': 'Riley', 'power': 66, 'element': 'fire'},
-             {'name': 'Nova', 'power': 61, 'element': 'shadow'},
-             {'name': 'Ash', 'power': 75, 'element': 'shadow'},
-             {'name': 'Ember', 'power': 59, 'element': 'lightning'}]
+            {'name': 'Riley', 'power': 66, 'element': 'fire'},
+            {'name': 'Nova', 'power': 61, 'element': 'shadow'},
+            {'name': 'Ash', 'power': 75, 'element': 'shadow'},
+            {'name': 'Ember', 'power': 59, 'element': 'lightning'}]
 
     spells = ['flash', 'tsunami', 'freeze', 'darkness']
 

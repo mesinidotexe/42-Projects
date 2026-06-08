@@ -31,6 +31,9 @@ def reducer() -> None:
     print('Min', spell_reducer([1, 2, 3, 4, 5], 'min'))
 
 
+def
+
+
 def main() -> None:
     reducer()
     print()
