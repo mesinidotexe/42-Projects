@@ -16,9 +16,9 @@ if __name__ == '__main__':
         log_level = os.getenv('LOG_LEVEL')
         zion_network = os.getenv('ZION_NETWORK')
         env_vars = [data_base,
-                     api_access,
-                     log_level,
-                     zion_network
+                    api_access,
+                    log_level,
+                    zion_network
                     ]
         if None in env_vars:
             print('Missing variable in .env file')
