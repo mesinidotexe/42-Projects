@@ -3,7 +3,7 @@ import os
 import site
 
 
-def find_venvs(start_path):
+def find_venvs(start_path: str) -> bool:
 
     for root, dirs, files in os.walk(start_path):
         if 'pyvenv.cfg' in files:
@@ -11,8 +11,8 @@ def find_venvs(start_path):
     return False
 
 
-def associating_venv(start_path):
-    venvs = ''
+def associating_venv(start_path: str) -> str:
+    venvs: str = ''
 
     for root, dirs, files in os.walk(start_path):
         if 'pyvenv.cfg' in files:
@@ -20,7 +20,7 @@ def associating_venv(start_path):
     return venvs
 
 
-def in_venv():
+def in_venv() -> bool:
     if sys.prefix != sys.base_prefix:
         return True
     else:
@@ -53,7 +53,7 @@ if __name__ == '__main__':
         print()
 
         print(f'Current Python: {sys.executable}')
-        found = 'None detected'
+        found: str = 'None detected'
         if find_venvs('.'):
             found = associating_venv('.')
         print(f'Virtual enviroment: {found}')

@@ -1,4 +1,4 @@
-def dependencies():
+def dependencies() -> bool:
     print('LOADING STATUS: Loading Programs...')
     print()
 
