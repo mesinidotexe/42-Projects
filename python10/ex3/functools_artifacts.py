@@ -20,7 +20,7 @@ def spell_reducer(spells: list[int], operation: str) -> int:
 
 
 def partial_enchanter(base_enchantment: Callable) -> dict[str, Callable]:
-
+    pass
 
 
 def reducer() -> None:
@@ -29,9 +29,6 @@ def reducer() -> None:
     print('Product', spell_reducer([1, 2, 3, 4, 5], 'multiply'))
     print('Max', spell_reducer([1, 2, 3, 4, 5], 'max'))
     print('Min', spell_reducer([1, 2, 3, 4, 5], 'min'))
-
-
-def
 
 
 def main() -> None:
