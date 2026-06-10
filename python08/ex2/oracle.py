@@ -37,10 +37,10 @@ if __name__ == '__main__':
         quit()
 
     if mode == 'development':
-        print(f'Batabase: Connected to local instance')
-        print(f'API Access: Authenticated')
-        print(f'Log Level: DEBUG')
-        print(f'Zion Network: ONLINE')
+        print('Batabase: Connected to local instance')
+        print('API Access: Authenticated')
+        print('Log Level: DEBUG')
+        print('Zion Network: ONLINE')
 
         print()
 
