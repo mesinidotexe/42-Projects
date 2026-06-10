@@ -25,20 +25,20 @@ class AlienContact(BaseModel):
     is_verified: bool = Field(default=False)
 
     @model_validator(mode='after')
-    def validation(self) -> str:
-        errors = ''
+    def validation(self) -> 'AlienContact':
+        errors = []
         if not self.contact_id.startswith('AC'):
-            errors += 'contact_id must start with "AC"'
+            errors.append('contact_id must start with "AC"')
         if self.contact_type == ContactType.PHYSICAL and not self.is_verified:
-            errors += 'Physical contact reports must be verified'
+            errors.append('Physical contact reports must be verified')
         if self.contact_type == ContactType.TELEPATHIC:
             if self.witnesses_count < 3:
-                errors += 'Telepathic contact requires at least 3 witnesses'
+                errors.append('Telepathic contact requires at least 3 witnesses')
         if self.signal_strength > 7.0 and self.message_recieved is None:
-            errors += 'Strong signals (>7.0) should include received messages'
+            errors.append('Strong signals (>7.0) should include received messages')
         if errors:
             raise ValueError(errors)
-        return 'No errors detected'
+        return self
 
 
 def main() -> None:
