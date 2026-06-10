@@ -10,12 +10,12 @@ class ContactType(Enum):
     VISUAL = 'visual'
     PHYSICAL = 'physical'
     TELEPATHIC = 'telepathic'
-    
+
 
 class AlienContact(BaseModel):
 
     contact_id: str = Field(min_length=5, max_length=15)
-    time_stamp: datetime = Field(datetime)
+    time_stamp: datetime
     location: str = Field(min_length=3, max_length=100)
     contact_type: ContactType
     signal_strength: float = Field(ge=0.0, le=10.0)
@@ -26,31 +26,33 @@ class AlienContact(BaseModel):
 
     @model_validator(mode='after')
     def validation(self) -> str:
-        errors = []
+        errors = ''
         if not self.contact_id.startswith('AC'):
-            errors.append('contact_id must start with "AC"')
+            errors += 'contact_id must start with "AC"'
         if self.contact_type == ContactType.PHYSICAL and not self.is_verified:
-            errors.append('Physical contact reports must be verified')
-        if self.contact_type == ContactType.TELEPATHIC and self.witnesses_count < 3:
-            errors.append('Telepathic contact requires at least 3 witnesses')
+            errors += 'Physical contact reports must be verified'
+        if self.contact_type == ContactType.TELEPATHIC:
+            if self.witnesses_count < 3:
+                errors += 'Telepathic contact requires at least 3 witnesses'
         if self.signal_strength > 7.0 and self.message_recieved is None:
-            errors.append('Strong signals (>7.0) should include received messages')
+            errors += 'Strong signals (>7.0) should include received messages'
         if errors:
             raise ValueError(errors)
-        return self
+        return 'No errors detected'
+
 
 def main() -> None:
     print('ALien Contact Log Validation')
     valid = AlienContact(
-        contact_id = 'AC_2024_001',
-        time_stamp = '2026-05-11T14:30:00',
-        location = 'Area 51, Nevada',
-        contact_type = ContactType.RADIO,
-        signal_strength =  8.5,
-        duration_minutes = 45,
-        witnesses_count = 5,
-        message_recieved = 'Greetings from Zeta Reticuli',
-        is_verified = True     
+        contact_id='AC_2024_001',
+        time_stamp=datetime.now(),
+        location='Area 51, Nevada',
+        contact_type=ContactType.RADIO,
+        signal_strength=8.5,
+        duration_minutes=45,
+        witnesses_count=5,
+        message_recieved='Greetings from Zeta Reticuli',
+        is_verified=True
     )
     print('=======================================')
     print('Valid contact report:')
@@ -61,20 +63,22 @@ def main() -> None:
     print(f'Duration: {valid.duration_minutes} minutes')
     print(f'Witnesses: {valid.witnesses_count}')
     print(f'Message: {valid.message_recieved}')
-    
+
     print('=======================================')
     try:
         invalid = AlienContact(
-            contact_id = 'AC_2024_001',
-            time_stamp = '2026-05-11T14:30:00',
-            location = 'Area 51, Nevada',
-            contact_type = ContactType.TELEPATHIC,
-            signal_strength =  8.5,
-            duration_minutes = 45,
-            witnesses_count = 2,
-            message_recieved = 'Greetings from Zeta Reticuli',
-            is_verified = True     
+            contact_id='AC_2024_001',
+            time_stamp=datetime.now(),
+            location='Area 51, Nevada',
+            contact_type=ContactType.TELEPATHIC,
+            signal_strength=8.5,
+            duration_minutes=45,
+            witnesses_count=2,
+            message_recieved='Greetings from Zeta Reticuli',
+            is_verified=True
         )
+        if invalid.is_verified:
+            print('Verified')
     except Exception as e:
         print(e)
 
