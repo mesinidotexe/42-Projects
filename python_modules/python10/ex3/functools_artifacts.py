@@ -31,6 +31,14 @@ def partial_enchanter(base_enchantment: Callable) -> dict[str, Callable]:
         }
 
 
+@functools.lru_cache
+def memoized_fibonacci(n: int) -> int:
+    if n <= 1:
+        return n
+    else:
+        return memoized_fibonacci(n - 1) + memoized_fibonacci(n - 2)
+
+
 def enchantment() -> None:
     spells = partial_enchanter(base_enchantment)
     fire_spell = spells['fire']
