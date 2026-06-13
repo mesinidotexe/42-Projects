@@ -9,9 +9,9 @@ def spell_reducer(spells: list[int], operation: str) -> int:
     if not operation in ('add', 'multiply', 'max', 'min'):
         return None
     if operation == 'add':
-        reduced_value = functools.reduce(lambda x, y: x + y, spells)
+        reduced_value = functools.reduce(operator.add, spells)
     elif operation == 'multiply':
-        reduced_value = functools.reduce(lambda x, y: x * y, spells)
+        reduced_value = functools.reduce(operator.mul, spells)
     elif operation == 'max':
         reduced_value = functools.reduce(lambda x, y: y if x < y else x, spells)
     elif operation == 'min':
@@ -19,8 +19,26 @@ def spell_reducer(spells: list[int], operation: str) -> int:
     return reduced_value
 
 
+def base_enchantment(power: int, element: str, target: str) -> str: 
+    return f'{element} spell {power}hp, hits {target}'
+
+
 def partial_enchanter(base_enchantment: Callable) -> dict[str, Callable]:
-    pass
+    return {
+        'fire': functools.partial(base_enchantment, 50, 'fire'),
+        'ice': functools.partial(base_enchantment, 50, 'ice'),
+        'lightning': functools.partial(base_enchantment, 50, 'lightning')
+        }
+
+
+def enchantment() -> None:
+    spells = partial_enchanter(base_enchantment)
+    fire_spell = spells['fire']
+    print(fire_spell('dragon'))
+    ice_spell = spells['ice']
+    print(ice_spell('mage'))
+    lightning_spell = spells['lightning']
+    print(lightning_spell('witch'))
 
 
 def reducer() -> None:
@@ -34,6 +52,7 @@ def reducer() -> None:
 def main() -> None:
     reducer()
     print()
+    enchantment()
 
 
 if __name__ == '__main__':
