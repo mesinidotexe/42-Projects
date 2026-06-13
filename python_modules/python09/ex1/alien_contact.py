@@ -47,7 +47,7 @@ def main() -> None:
         contact_id='AC_2024_001',
         time_stamp=datetime.now(),
         location='Area 51, Nevada',
-        contact_type=ContactType.RADIO,
+        contact_type='radio',
         signal_strength=8.5,
         duration_minutes=45,
         witnesses_count=5,
