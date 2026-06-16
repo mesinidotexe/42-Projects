@@ -1,9 +1,9 @@
-from typing import Any
+from typing import Any, List
 from collections.abc import Callable
 
 
 def mage_counter() -> Callable:
-    x = 0
+    x: int = 0
 
     def inner() -> int:
         nonlocal x
@@ -24,16 +24,18 @@ def spell_accumulator(initial_power: int) -> Callable:
 
 
 def enchantment_factory(enchantment_type: str) -> Callable:
-    string = ''
+    string: str = ''
+
     def inner(item: str) -> str:
         nonlocal string
         string = f'{enchantment_type}_{item}'
         return string
+
     return inner
 
 
 def memory_vault() -> dict[str, Callable]:
-    data = {}
+    data: List = {}
 
     def store(key: str, value: Any) -> None:
         nonlocal data

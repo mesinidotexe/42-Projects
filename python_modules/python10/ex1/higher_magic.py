@@ -1,4 +1,5 @@
 from collections.abc import Callable
+from typing import List
 
 
 def spell_combiner(spell1: Callable, spell2: Callable) -> Callable:
@@ -29,7 +30,7 @@ def conditional_caster(condition: Callable, spell: Callable) -> Callable:
 def spell_sequence(spells: list[Callable]) -> Callable:
 
     def s_sequence(target: str, power: int) -> str:
-        sequence = []
+        sequence: List = []
         for spell in spells:
             sequence.append(spell(target, power))
         return sequence
@@ -56,30 +57,30 @@ def new_spell(target: str, power: int) -> str:
 
 
 def main():
-    test_values = [5, 17, 11]
-    test_targets = ['Dragon', 'Goblin', 'Wizard', 'Knight']
+    test_values: List[int] = [5, 17, 11]
+    test_targets: List[str] = ['Dragon', 'Goblin', 'Wizard', 'Knight']
 
-    combined = spell_combiner(fireball, heal)
+    combined: Callable = spell_combiner(fireball, heal)
     print(combined(test_targets[0], test_values[1]))
 
     print()
 
-    amplifed = power_amplifier(fireball, 3)
+    amplifed: Callable = power_amplifier(fireball, 3)
     print(amplifed(test_targets[1], test_values[2]))
 
     print()
 
-    condition = conditional_caster(def_condition, new_spell)
+    condition: Callable = conditional_caster(def_condition, new_spell)
     print(condition(test_targets[2], test_values[0]))
     print(condition(test_targets[3], test_values[1]))
 
     print()
 
-    all_spells = [combined,
+    all_spells: List[Callable] = [combined,
                   amplifed,
                   condition
                   ]
-    seq = spell_sequence(all_spells)
+    seq: Callable = spell_sequence(all_spells)
     print(seq(test_targets[0], test_values[2]))
 
 

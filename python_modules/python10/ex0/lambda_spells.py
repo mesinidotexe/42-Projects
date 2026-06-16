@@ -1,5 +1,8 @@
+from typing import List
+
+
 def artifact_sorter(artifacts: list[dict]) -> list[dict]:
-    rsorted = sorted(artifacts, key=lambda x: x['power'], reverse=True)
+    rsorted: List[dict] = sorted(artifacts, key=lambda x: x['power'], reverse=True)
     return rsorted
 
 
@@ -25,40 +28,44 @@ def mage_stats(mages: list[dict]) -> dict:
 
 
 def main():
-    artifacts = [{'name': 'Fire Staff', 'power': 114, 'type': 'armor'},
-                {'name': 'Water Chalice', 'power': 113, 'type': 'focus'},
-                {'name': 'Crystal Orb', 'power': 95, 'type': 'weapon'},
-                {'name': 'Light Prism', 'power': 63, 'type': 'relic'}]
+    artifacts: List[dict] = [
+        {'name': 'Fire Staff', 'power': 114, 'type': 'armor'},
+        {'name': 'Water Chalice', 'power': 113, 'type': 'focus'},
+        {'name': 'Crystal Orb', 'power': 95, 'type': 'weapon'},
+        {'name': 'Light Prism', 'power': 63, 'type': 'relic'}
+    ]
 
-    mages = [{'name': 'Sage', 'power': 78, 'element': 'light'},
-            {'name': 'Riley', 'power': 66, 'element': 'fire'},
-            {'name': 'Nova', 'power': 61, 'element': 'shadow'},
-            {'name': 'Ash', 'power': 75, 'element': 'shadow'},
-            {'name': 'Ember', 'power': 59, 'element': 'lightning'}]
+    mages: List[dict] = [
+        {'name': 'Sage', 'power': 78, 'element': 'light'},
+        {'name': 'Riley', 'power': 66, 'element': 'fire'},
+        {'name': 'Nova', 'power': 61, 'element': 'shadow'},
+        {'name': 'Ash', 'power': 75, 'element': 'shadow'},
+        {'name': 'Ember', 'power': 59, 'element': 'lightning'}
+    ]
 
-    spells = ['flash', 'tsunami', 'freeze', 'darkness']
+    spells: List[str] = ['flash', 'tsunami', 'freeze', 'darkness']
 
     print('Testing artifact sorter...')
-    _sorted = artifact_sorter(artifacts)
+    _sorted: List[dict] = artifact_sorter(artifacts)
     for mage in _sorted:
         print(mage.values())
     print()
 
     print('Testing power filter...')
-    filtered = power_filter(artifacts, 100)
+    filtered: List[dict] = power_filter(artifacts, 100)
     for item in filtered:
         print(item.values())
     print()
 
 
     print('Testing Mage stats')
-    stats = mage_stats(mages)
+    stats: List[dict] = mage_stats(mages)
     print(stats)
     print()
 
 
     print('Testing Spell Transformer...')
-    transformed = spell_transformer(spells)
+    transformed: List[dict] = spell_transformer(spells)
     print(transformed)
 
 
