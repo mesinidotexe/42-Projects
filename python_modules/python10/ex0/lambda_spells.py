@@ -2,7 +2,8 @@ from typing import List
 
 
 def artifact_sorter(artifacts: list[dict]) -> list[dict]:
-    rsorted: List[dict] = sorted(artifacts, key=lambda x: x['power'], reverse=True)
+    rsorted: List[dict] = sorted(
+        artifacts, key=lambda x: x['power'], reverse=True)
     return rsorted
 
 
@@ -27,7 +28,7 @@ def mage_stats(mages: list[dict]) -> dict:
     return {'max_power': _max, 'min_power': _min, 'avg_power': average}
 
 
-def main():
+def main() -> None:
     artifacts: List[dict] = [
         {'name': 'Fire Staff', 'power': 114, 'type': 'armor'},
         {'name': 'Water Chalice', 'power': 113, 'type': 'focus'},
@@ -57,15 +58,13 @@ def main():
         print(item.values())
     print()
 
-
     print('Testing Mage stats')
-    stats: List[dict] = mage_stats(mages)
+    stats = mage_stats(mages)
     print(stats)
     print()
 
-
     print('Testing Spell Transformer...')
-    transformed: List[dict] = spell_transformer(spells)
+    transformed = spell_transformer(spells)
     print(transformed)
 
 

@@ -1,9 +1,8 @@
 from collections.abc import Callable
-from typing import List
 
 
 def spell_combiner(spell1: Callable, spell2: Callable) -> Callable:
-    
+
     def combined(target: str, power: int):
         return spell1(target, power), spell2(target, power)
     return combined
@@ -17,7 +16,7 @@ def power_amplifier(base_spell: Callable, multiplier: int) -> Callable:
 
 
 def conditional_caster(condition: Callable, spell: Callable) -> Callable:
-    
+
     def checking(target: str, power: int) -> str:
         if condition(target, power):
             new_spell = spell(target, power)
@@ -29,8 +28,8 @@ def conditional_caster(condition: Callable, spell: Callable) -> Callable:
 
 def spell_sequence(spells: list[Callable]) -> Callable:
 
-    def s_sequence(target: str, power: int) -> str:
-        sequence: List = []
+    def s_sequence(target: str, power: int) -> list:
+        sequence: list = []
         for spell in spells:
             sequence.append(spell(target, power))
         return sequence
@@ -45,7 +44,7 @@ def heal(target: str, power: int) -> str:
     return f'{target} healed in {power} hp'
 
 
-def def_condition(target: str, power: int) -> str:
+def def_condition(target: str, power: int) -> bool:
     target.capitalize()
     if power >= 10:
         return True
@@ -56,9 +55,9 @@ def new_spell(target: str, power: int) -> str:
     return f'{target} killed monster by causing {power} damage'
 
 
-def main():
-    test_values: List[int] = [5, 17, 11]
-    test_targets: List[str] = ['Dragon', 'Goblin', 'Wizard', 'Knight']
+def main() -> None:
+    test_values = [5, 17, 11]
+    test_targets = ['Dragon', 'Goblin', 'Wizard', 'Knight']
 
     combined: Callable = spell_combiner(fireball, heal)
     print(combined(test_targets[0], test_values[1]))
@@ -76,10 +75,11 @@ def main():
 
     print()
 
-    all_spells: List[Callable] = [combined,
-                  amplifed,
-                  condition
-                  ]
+    all_spells = [
+        combined,
+        amplifed,
+        condition
+    ]
     seq: Callable = spell_sequence(all_spells)
     print(seq(test_targets[0], test_values[2]))
 

@@ -7,20 +7,20 @@ from typing import Any
 def spell_reducer(spells: list[int], operation: str) -> int:
     if not spells:
         return 0
-    if not operation in ('add', 'multiply', 'max', 'min'):
-        return None
+    if operation not in ('add', 'multiply', 'max', 'min'):
+        return 0
     if operation == 'add':
-        reduced_value = functools.reduce(operator.add, spells)
+        reduced_val = functools.reduce(operator.add, spells)
     elif operation == 'multiply':
-        reduced_value = functools.reduce(operator.mul, spells)
+        reduced_val = functools.reduce(operator.mul, spells)
     elif operation == 'max':
-        reduced_value = functools.reduce(lambda x, y: y if x < y else x, spells)
+        reduced_val = functools.reduce(lambda x, y: y if x < y else x, spells)
     elif operation == 'min':
-        reduced_value = functools.reduce(lambda x, y: y if x > y else x, spells)    
-    return reduced_value
+        reduced_val = functools.reduce(lambda x, y: y if x > y else x, spells)
+    return reduced_val
 
 
-def base_enchantment(power: int, element: str, target: str) -> str: 
+def base_enchantment(power: int, element: str, target: str) -> str:
     return f'{element} spell {power}hp, hits {target}'
 
 
@@ -41,23 +41,23 @@ def memoized_fibonacci(n: int) -> int:
 
 
 def spell_dispatcher() -> Callable[[Any], str]:
-    
+
     @functools.singledispatch
     def check_type(spell_type: Any) -> str:
         return f'Unknown spell type {type(spell_type)}'
-    
+
     @check_type.register
     def _(spell_type: int):
         return f'Damage spell: {spell_type} damage'
-    
+
     @check_type.register
     def _(spell_type: str):
         return f'Enchantment: {spell_type}'
-    
+
     @check_type.register
     def _(spell_type: list):
         return f'Multi-cast: {len(spell_type)}'
-    
+
     return check_type
 
 
@@ -82,9 +82,9 @@ def reducer() -> None:
 
 def dispatcher():
     print('Testing spell dispatcher...')
-    int_type: int = 42
-    str_type: str = 'fireball'
-    list_type: list = [
+    int_type = 42
+    str_type = 'fireball'
+    list_type = [
         'asd',
         {'key': 'Value'},
         67
@@ -107,7 +107,7 @@ def main() -> None:
         print(memoized_fibonacci(test))
     print()
     dispatcher()
-    
+
 
 if __name__ == '__main__':
     main()

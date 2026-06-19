@@ -1,4 +1,4 @@
-from typing import Any, List
+from typing import Any
 from collections.abc import Callable
 
 
@@ -35,17 +35,16 @@ def enchantment_factory(enchantment_type: str) -> Callable:
 
 
 def memory_vault() -> dict[str, Callable]:
-    data: List = {}
+    data: dict = {}
 
     def store(key: str, value: Any) -> None:
-        nonlocal data
         data[key] = value
-    
+
     def recall(key: str) -> Any:
         if key in data:
             return data[key]
         return 'Memory not found'
-    
+
     return {'store': store, 'recall': recall}
 
 
