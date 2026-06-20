@@ -77,3 +77,4 @@ if __name__ == '__main__':
     value = 42
     vault = memory_vault()
     vault['store'](key, value)
+    
