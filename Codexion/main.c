@@ -1,21 +1,22 @@
 #include "header.h"
 
 
-int *init_variables(int argc, char **argv)
+t_variables *init_variables(int argc, char **argv)
 {
-    int *variables;
-    int i;
+    t_variables *variables;
 
-    variables = malloc(sizeof(int) * (argc - 1));
+    variables = malloc(sizeof(t_variables) * (argc - 1));
     if (!variables)
         return (NULL);
-    i = 0;
-    while(i < argc - 1)
-    {
-        variables[i] = atoi(argv[i + 1]);
-        i++;
-    }
-    return (variables);
+    variables->number_of_coders = atoi(argv[1]);
+    variables->time_to_burnout = atoi(argv[2]);
+    variables->time_to_compile = atoi(argv[3]);
+    variables->time_to_debug = atoi(argv[4]);
+    variables->time_to_refactor = atoi(argv[5]);
+    variables->number_of_compiles_required= atoi(argv[6]);
+    variables->dongle_cooldown = atoi(argv[7]);
+    variables->scheduler = argv[8];
+    return variables;
 }
 
 
@@ -45,7 +46,7 @@ pthread_t *init_coders_array(int number_of_coders)
 
     while (i < number_of_coders)
     {
-        pthread_create(&coders[i], NULL, &routine, (void *)(long) i);
+        pthread_create(&coders[i], NULL, &routine, (void *)(long) i + 1);
         i++;
     }
 
@@ -60,27 +61,32 @@ pthread_t *init_coders_array(int number_of_coders)
 
 int main(int argc, char **argv)
 {
-    int *variables;
-    pthread_t *coders_info;
-    
+    t_variables *variables;
+    pthread_t *coders_arr;
+    if (!main_parser(argc, argv))
+        return 1;
     variables = init_variables(argc, argv);
     if (!variables)
         return (1);
 
 
     // Variable Tester ===========================
-    int i;
-    i = 0;
-    while (i < argc - 1)
-        printf("%d\n", variables[i++]);
+    printf("%d\n", variables->number_of_coders);
+    printf("%d\n", variables->time_to_burnout);
+    printf("%d\n", variables->time_to_compile);
+    printf("%d\n", variables->time_to_debug);
+    printf("%d\n", variables->time_to_refactor);
+    printf("%d\n", variables->number_of_compiles_required);
+    printf("%d\n", variables->dongle_cooldown);
+    printf("%s\n", variables->scheduler);
     // ===========================================
 
 
     // Threads Tester ============================
-    coders_info = init_coders_array(variables[0]);
+    coders_arr = init_coders_array(variables->number_of_coders);
     // ===========================================
 
-    free(coders_info);
+    free(coders_arr);
     free(variables);
     return 0;
 }
