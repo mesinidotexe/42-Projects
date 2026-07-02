@@ -4,7 +4,6 @@
 t_variables *init_variables(int argc, char **argv)
 {
     t_variables *variables;
-
     variables = malloc(sizeof(t_variables) * (argc - 1));
     if (!variables)
         return (NULL);
@@ -21,23 +20,34 @@ t_variables *init_variables(int argc, char **argv)
 
 
 
-void *routine(void *number_of_thread)
+void *routine(void *arg)
 {
-    long id = (long)number_of_thread;
-    printf("Test from thread %ld\n", id);
+    t_variables *variables;
+
+    variables = (t_variables *)arg;
+    printf("Number of coders %d\n", variables->number_of_coders);
+    printf("Number of coders %d\n", variables->time_to_burnout);
+    printf("Number of coders %d\n", variables->time_to_compile);
+    printf("Number of coders %d\n", variables->time_to_debug);
+    printf("Number of coders %d\n", variables->time_to_refactor);
+    printf("Number of coders %d\n", variables->number_of_compiles_required);
+    printf("Number of coders %d\n", variables->dongle_cooldown);
+    printf("Number of coders %s\n", variables->scheduler);
     sleep(3);
-    printf("Ending thread %ld\n", id);
+    printf("Ending thread\n");
     return(NULL);
 }
 
 
 
-pthread_t *init_coders_array(int number_of_coders)
+pthread_t *init_coders_array(t_variables *variables)
 {
     pthread_t *coders;
+    int number_of_coders;
     int i;
     int j;
 
+    number_of_coders = variables->number_of_coders;
     coders = malloc(sizeof(pthread_t) * number_of_coders);
     if (!coders)
         return (NULL);
@@ -46,7 +56,7 @@ pthread_t *init_coders_array(int number_of_coders)
 
     while (i < number_of_coders)
     {
-        pthread_create(&coders[i], NULL, &routine, (void *)(long) i + 1);
+        pthread_create(&coders[i], NULL, &routine, (void *) variables);
         i++;
     }
 
@@ -63,6 +73,7 @@ int main(int argc, char **argv)
 {
     t_variables *variables;
     pthread_t *coders_arr;
+
     if (!main_parser(argc, argv))
         return 1;
     variables = init_variables(argc, argv);
@@ -83,7 +94,7 @@ int main(int argc, char **argv)
 
 
     // Threads Tester ============================
-    coders_arr = init_coders_array(variables->number_of_coders);
+    coders_arr = init_coders_array(variables);
     // ===========================================
 
     free(coders_arr);
