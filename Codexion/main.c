@@ -25,14 +25,17 @@ void *routine(void *arg)
     t_variables *variables;
 
     variables = (t_variables *)arg;
-    printf("Number of coders %d\n", variables->number_of_coders);
-    printf("Number of coders %d\n", variables->time_to_burnout);
-    printf("Number of coders %d\n", variables->time_to_compile);
-    printf("Number of coders %d\n", variables->time_to_debug);
-    printf("Number of coders %d\n", variables->time_to_refactor);
-    printf("Number of coders %d\n", variables->number_of_compiles_required);
-    printf("Number of coders %d\n", variables->dongle_cooldown);
-    printf("Number of coders %s\n", variables->scheduler);
+    int amount_of_dongles;
+    
+    amount_of_dongles = variables->number_of_coders;
+    printf("Number of coders %d %d\n", variables->number_of_coders, amount_of_dongles);
+    printf("Time to burnout %d\n", variables->time_to_burnout);
+    printf("Time to compile %d\n", variables->time_to_compile);
+    printf("Time to debug %d\n", variables->time_to_debug);
+    printf("Time to refactor %d\n", variables->time_to_refactor);
+    printf("Number of compiles required %d\n", variables->number_of_compiles_required);
+    printf("Dongle cooldown %d\n", variables->dongle_cooldown);
+    printf("scheduler %s\n", variables->scheduler);
     sleep(3);
     printf("Ending thread\n");
     return(NULL);
