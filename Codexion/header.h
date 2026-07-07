@@ -21,4 +21,17 @@ typedef struct s_variables
 }	t_variables;
 
 
+typedef struct s_coder
+{
+    int             id;
+    pthread_t       thread;
+    t_variables     *vars;
+} t_coder;
+
+
+void *routine(void *arg);
+
+t_variables *init_variables(char **argv);
+t_coder *init_coders_array(t_variables *variables);
+void start_simulation(t_coder *coders);
 #endif

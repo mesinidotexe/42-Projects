@@ -1,7 +1,7 @@
-NAME	= a.out
+NAME	= codexion
 CC		= cc
 CFLAGS	= -Wall -Wextra -Werror
-SRCS	= main.c parser/main_parse.c parser/parse_utils.c
+SRCS	= main.c inits.c routine.c parser/main_parse.c parser/parse_utils.c
 OBJS	= $(SRCS:.c=.o)
 
 
