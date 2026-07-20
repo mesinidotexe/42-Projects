@@ -24,6 +24,11 @@ class Main():
             parameters[4] = '\x1b[0m'
             print('There is an outstandard color for "end_hub_color", the program will continue sticking with the regular terminal output color')
 
+
+    
+        positions = Parse.hubs_positions()
+        for item in positions:
+            print(item)
      
 if __name__ == '__main__':
     try:

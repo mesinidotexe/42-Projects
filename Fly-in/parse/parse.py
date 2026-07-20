@@ -82,7 +82,7 @@ class Parse():
 
                     if cls.metadata(line):
                         if not cls.bracket_validator(line):
-                            print('Invalid input file, maybe you forgot to close the "[]"?')
+                            print('Invalid input file on first 3 parameters, maybe you forgot to close the "[]"?')
                             return None
                         start_hub_color = cls.get_color(line)
                         variables.append(start_hub_color)
@@ -116,16 +116,20 @@ class Parse():
         return variables
     
     @classmethod
-    def hubs_positions(cls):
-        hubs: dict[str, tuple[int, int]] = {}
+    def hubs_positions(cls) -> dict | None:
+        data: list[dict[str, tuple[int, int]]] = []
         with open('input_file.txt') as input_file:
             for line in input_file:
                 if line.startswith('hub'):
                     parts = line.split()
                     key = parts[1]
                     try:
-                        value = int(parts[2], int(parts[3]))
+                        value = (int(parts[2]), int(parts[3]))
+                        data.append({key: value})
                     except ValueError:
-                        print('You must pass an integer as a position')
+                        print('You must pass an integer on aruments 2 and 3 of hubs')
                         return None
-                    
+                    if cls.metadata(line):
+                        if not cls.bracket_validator(line):
+                            print('Invalid input file on hubs, maybe you forgot to close the "[]"?')
+        return data
