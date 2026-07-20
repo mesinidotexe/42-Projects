@@ -23,7 +23,6 @@ class Main():
         if parameters[4] == 'outstandard':
             parameters[4] = '\x1b[0m'
             print('There is an outstandard color for "end_hub_color", the program will continue sticking with the regular terminal output color')
-        print(f'{parameters[2]}{parameters}')
 
      
 if __name__ == '__main__':

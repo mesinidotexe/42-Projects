@@ -115,10 +115,17 @@ class Parse():
                 
         return variables
     
-    # @classmethod
-    # def hubs_positions(cls):
-    #     hubs: list[dict] = []
-    #     with open('input_file.txt') as input_file:
-    #         for line in input_file:
-    #             if line.startswith('hub'):
+    @classmethod
+    def hubs_positions(cls):
+        hubs: dict[str, tuple[int, int]] = {}
+        with open('input_file.txt') as input_file:
+            for line in input_file:
+                if line.startswith('hub'):
+                    parts = line.split()
+                    key = parts[1]
+                    try:
+                        value = int(parts[2], int(parts[3]))
+                    except ValueError:
+                        print('You must pass an integer as a position')
+                        return None
                     
