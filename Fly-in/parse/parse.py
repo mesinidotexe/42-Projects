@@ -205,7 +205,7 @@ class Parse():
                             print('Invalid input file on hubs, maybe you forgot to close the "[]"?')
                             return None
 
-                        standard_zones: list[str] = ['normal', 'blocked', 'restricted', 'priority']
+                        standard_zones: list[str] = [None, 'normal', 'blocked', 'restricted', 'priority']
                         metadata: dict = cls.parse_metadata(line)
                         if metadata.get('zone') in standard_zones: 
                             hub_entry['zone'] = metadata.get('zone')
@@ -215,6 +215,8 @@ class Parse():
                             raise ZoneError('Zone name not in the standards')
                             
                         hub_entry['color'] = cls.get_color(line)
+                        if hub_entry['color'] is None or hub_entry['color'] == 'outstandard':
+                            hub_entry['color'] = '\x1b[0m'
                         
                         try:
                             hub_entry['max_drones'] = int(metadata.get('max_drones')) if metadata.get('max_drones') is not None else 1
