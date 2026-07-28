@@ -53,7 +53,7 @@ class Parse():
         return len(stack) == 0
 
     @classmethod
-    def duplicate_line(cls, phrase) -> bool:
+    def duplicate_line(cls, phrase: str) -> bool:
         counter: int = 0
         with open('input_file.txt') as input_file:
             for line in input_file:
@@ -148,7 +148,7 @@ class Parse():
     def check_valid_name(line: str) -> bool:
         try:
             splitted: list = line.split()
-            if line and '-' in splitted[1]:
+            if not line.startswith('connection') and '-' in splitted[1]:
                 return False
             return True
         except IndexError:
@@ -182,3 +182,8 @@ class Parse():
                         hub_entry['max_drones'] = metadata.get('max_drones')
                         data.append(hub_entry)
         return data
+    
+    
+    # @classmethod
+    # def connections(cls) -> str:
+        
