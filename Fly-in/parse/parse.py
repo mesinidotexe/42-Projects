@@ -22,7 +22,8 @@ class Parse():
             'yellow': Fore.YELLOW,
             'gray': Fore.LIGHTBLACK_EX
         }
-        match = re.search(r'color=(\w+)', line)
+        metadata = line.split('[')[1].split(']')[0]
+        match = re.search(r'color=(\w+)', metadata)
         if not match:
             return None
 
@@ -31,6 +32,7 @@ class Parse():
             return 'outstandard'
 
         return colors[color_name]
+    
     
     # Auxiliar method
     @staticmethod
@@ -51,13 +53,25 @@ class Parse():
         return len(stack) == 0
 
     @classmethod
+    def duplicate_line(cls, phrase) -> bool:
+        counter: int = 0
+        with open('input_file.txt') as input_file:
+            for line in input_file:
+                if line.startswith(phrase):
+                    counter += 1
+        if counter > 1:
+            return False
+        return True
+                
+
+    @classmethod
     def splitting_fix_lines(cls) -> list:
         variables: list[int | str | None | tuple] = []
 
         with open('input_file.txt') as input_file:
             for line in input_file:
 
-                if line.startswith('nb_drones'):
+                if line.startswith('nb_drones:'):
                     try:
                         number_of_drones: int | None = (int(line.split(':')[1]) if len(line.split(':')) == 2 else None)
                         variables.append(number_of_drones)
@@ -65,7 +79,7 @@ class Parse():
                         print('The amount of drones must be an integer')
                         return None
 
-                elif line.startswith('start_hub'):
+                elif line.startswith('start_hub:'):
                     start_parts: list = line.split()
                     if len(start_parts) in (4, 5):
                         try:
@@ -89,7 +103,7 @@ class Parse():
                     else:
                         variables.append(None)
 
-                elif line.startswith('end_hub'):
+                elif line.startswith('end_hub:'):
                     end_parts: list = line.split()
                     if len(end_parts) in (4, 5):
                         try:
@@ -115,21 +129,56 @@ class Parse():
                 
         return variables
     
+    #auxiliar method
+    @staticmethod
+    def parse_metadata(line: str) -> dict:
+        if '[' not in line:
+            return {}
+
+        meta_str = line.split('[')[1].split(']')[0]
+        metadata: dict[str, str] = {}
+        for pair in meta_str.split():
+            key, value = pair.split('=')
+            metadata[key] = value
+
+        return metadata
+    
+    #auxiliar method
+    @staticmethod
+    def check_valid_name(line: str) -> bool:
+        try:
+            splitted: list = line.split()
+            if line and '-' in splitted[1]:
+                return False
+            return True
+        except IndexError:
+            return True
+        
     @classmethod
-    def hubs_positions(cls) -> dict | None:
-        data: list[dict[str, tuple[int, int]]] = []
+    def hubs_positions(cls) -> list[dict] | None:
+        data: list = []
         with open('input_file.txt') as input_file:
             for line in input_file:
-                if line.startswith('hub'):
+                if not cls.check_valid_name(line):
+                    print('Invalid hub name (cannot have "-")')
+                    return None
+                if line.startswith('hub:'):
                     parts = line.split()
                     key = parts[1]
                     try:
                         value = (int(parts[2]), int(parts[3]))
-                        data.append({key: value})
                     except ValueError:
                         print('You must pass an integer on aruments 2 and 3 of hubs')
                         return None
+                    
+                    hub_entry = {'name': key, 'position': (value)}
                     if cls.metadata(line):
                         if not cls.bracket_validator(line):
                             print('Invalid input file on hubs, maybe you forgot to close the "[]"?')
+                            return None
+                        metadata: dict = cls.parse_metadata(line)
+                        hub_entry['zone'] = metadata.get('zone')
+                        hub_entry['color'] = cls.get_color(line)
+                        hub_entry['max_drones'] = metadata.get('max_drones')
+                        data.append(hub_entry)
         return data

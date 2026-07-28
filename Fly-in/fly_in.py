@@ -8,6 +8,9 @@ class Main():
     @classmethod
     def main(cls):
         init(autoreset=True)
+        if not Parse.duplicate_line('nb_drones:') or not Parse.duplicate_line('start_hub:') or not Parse.duplicate_line('end_hub:'):
+            print('Doubled lines in your input file')
+            sys.exit(1)
         parameters: list[int | str | tuple[int | None, int | None] | None] | None = Parse.splitting_fix_lines()
         print(parameters)
         if not parameters:
@@ -26,10 +29,16 @@ class Main():
 
 
     
-        positions = Parse.hubs_positions()
+        positions: list[dict[str, None| str, str | str, tuple[int, int]]] = Parse.hubs_positions()
+        if positions is None:
+            print('Error in parsing')
+            sys.exit(1)
         for item in positions:
             print(item)
-     
+            print()
+    
+    
+    
 if __name__ == '__main__':
     try:
         Main.main()
