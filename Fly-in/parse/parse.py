@@ -220,10 +220,13 @@ class Parse():
                         
                         try:
                             hub_entry['max_drones'] = int(metadata.get('max_drones')) if metadata.get('max_drones') is not None else 1
-                            data.append(hub_entry)
+                            if metadata.get('max_drones') is not None and int(metadata.get('max_drones')) < 0:
+                                print('max_drones field must be a positive integer')
+                                return None
                         except ValueError:
                             print('A positive integer must be passed as a parameter')
                             return None
+                        data.append(hub_entry)
         return data
     
     

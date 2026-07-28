@@ -36,7 +36,7 @@ class Main():
     
         positions: list[dict[str, None| str, str | str, tuple[int, int]]] = Parse.hubs_positions()
         if positions is None:
-            print('Error in getting hub positions')
+            print('Error in getting the hubs')
             sys.exit(1)
         for item in positions:
             print(item)
