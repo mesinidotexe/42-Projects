@@ -1,7 +1,13 @@
 from colorama import Fore
 import re
+import sys
+
+class ZoneError(Exception):
+    pass
 
 class Parse():
+    
+    standard_zones: list[str] = ['normal', 'blocked', 'restricted', 'priority']
     
     # Auxiliar method
     @staticmethod
@@ -63,6 +69,13 @@ class Parse():
             return False
         return True
                 
+    @classmethod
+    def first_line(cls):
+        with open('input_file.txt') as input_file:
+            if not input_file.readlines()[0].startswith('nb_drones:'):
+                    print('The first line should start with "nb_drones:"')
+                    return False
+            return True
 
     @classmethod
     def splitting_fix_lines(cls) -> list:
@@ -157,7 +170,7 @@ class Parse():
     def check_valid_name(line: str) -> bool:
         try:
             splitted: list = line.split()
-            if not line.startswith('connection') and '-' in splitted[1]:
+            if not line.startswith('connection') and '-' in splitted[1] or ' ' in splitted[1]:
                 return False
             return True
         except IndexError:
@@ -166,11 +179,14 @@ class Parse():
     @classmethod
     def hubs_positions(cls) -> list[dict] | None:
         data: list = []
+        
         with open('input_file.txt') as input_file:
             for line in input_file:
+                
                 if not line.startswith('nb_drones:') and not cls.check_valid_name(line):
                     print('Invalid hub name (cannot have "-")')
                     return None
+                
                 if line.startswith('hub:'):
                     parts = line.split()
                     key = parts[1]
@@ -179,7 +195,7 @@ class Parse():
                         if value[0] < 0 or value[1] < 0:
                             print('Hub position must be positive')
                             return None
-                    except ValueError:
+                    except Exception:
                         print('You must pass an integer on aruments 2 and 3 of hubs')
                         return None
                     
@@ -188,11 +204,24 @@ class Parse():
                         if not cls.bracket_validator(line):
                             print('Invalid input file on hubs, maybe you forgot to close the "[]"?')
                             return None
+
+                        standard_zones: list[str] = ['normal', 'blocked', 'restricted', 'priority']
                         metadata: dict = cls.parse_metadata(line)
-                        hub_entry['zone'] = metadata.get('zone')
+                        if metadata.get('zone') in standard_zones: 
+                            hub_entry['zone'] = metadata.get('zone')
+                            if hub_entry['zone'] is None:
+                                hub_entry['zone'] = 'normal'
+                        else:
+                            raise ZoneError('Zone name not in the standards')
+                            
                         hub_entry['color'] = cls.get_color(line)
-                        hub_entry['max_drones'] = metadata.get('max_drones')
-                        data.append(hub_entry)
+                        
+                        try:
+                            hub_entry['max_drones'] = int(metadata.get('max_drones')) if metadata.get('max_drones') is not None else 1
+                            data.append(hub_entry)
+                        except ValueError:
+                            print('A positive integer must be passed as a parameter')
+                            return None
         return data
     
     

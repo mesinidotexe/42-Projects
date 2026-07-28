@@ -11,6 +11,11 @@ class Main():
         if not Parse.duplicate_line('nb_drones:') or not Parse.duplicate_line('start_hub:') or not Parse.duplicate_line('end_hub:'):
             print('Doubled lines in your input file')
             sys.exit(1)
+            
+        if not Parse.first_line():
+            sys.exit(1)
+            
+        
         parameters: list[int | str | tuple[int | None, int | None] | None] | None = Parse.splitting_fix_lines()
         print(parameters)
         if not parameters:
