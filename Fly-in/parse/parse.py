@@ -74,6 +74,9 @@ class Parse():
                 if line.startswith('nb_drones:'):
                     try:
                         number_of_drones: int | None = (int(line.split(':')[1]) if len(line.split(':')) == 2 else None)
+                        if number_of_drones <= 0:
+                            print('Number of dones must be 1 or higher')
+                            return None
                         variables.append(number_of_drones)
                     except ValueError:
                         print('The amount of drones must be an integer')
@@ -85,6 +88,9 @@ class Parse():
                         try:
                             x = int(start_parts[2])
                             y = int(start_parts[3])
+                            if x < 0 or y < 0:
+                                print('Position must be positive')
+                                return None
                             start_hub: tuple[int, int] = (x, y)
                             variables.append(start_hub)
                         except ValueError:
@@ -109,6 +115,9 @@ class Parse():
                         try:
                             x = int(end_parts[2])
                             y = int(end_parts[3])
+                            if x < 0 or y < 0:
+                                print('Position must be positive')
+                                return None
                             end_hub: tuple[int, int] = (x, y)
                             variables.append(end_hub)
                         except ValueError:
@@ -159,7 +168,7 @@ class Parse():
         data: list = []
         with open('input_file.txt') as input_file:
             for line in input_file:
-                if not cls.check_valid_name(line):
+                if not line.startswith('nb_drones:') and not cls.check_valid_name(line):
                     print('Invalid hub name (cannot have "-")')
                     return None
                 if line.startswith('hub:'):
@@ -167,6 +176,9 @@ class Parse():
                     key = parts[1]
                     try:
                         value = (int(parts[2]), int(parts[3]))
+                        if value[0] < 0 or value[1] < 0:
+                            print('Hub position must be positive')
+                            return None
                     except ValueError:
                         print('You must pass an integer on aruments 2 and 3 of hubs')
                         return None

@@ -14,7 +14,7 @@ class Main():
         parameters: list[int | str | tuple[int | None, int | None] | None] | None = Parse.splitting_fix_lines()
         print(parameters)
         if not parameters:
-            print('Empty input_file or wrong input file name')
+            print('Empty input_file, wrong input file name or invalid syntax')
             sys.exit(1)
         if parameters is None or None in (parameters[0], parameters[1], parameters[3]):
             print('Invalid syntax in one or more lines on the first 3 lines in input_file, exitting the program')
@@ -31,7 +31,7 @@ class Main():
     
         positions: list[dict[str, None| str, str | str, tuple[int, int]]] = Parse.hubs_positions()
         if positions is None:
-            print('Error in parsing')
+            print('Error in getting hub positions')
             sys.exit(1)
         for item in positions:
             print(item)
