@@ -86,7 +86,7 @@ class Parse():
                     try:
                         number_of_drones: int | None = (int(line.split(':')[1]) if len(line.split(':')) == 2 else None)
                         if number_of_drones <= 0:
-                            raise exception.NegativeDronesErroor('Number of dones must be 1 or higher')
+                            raise exception.NegativeError('Number of dones must be 1 or higher')
                         variables.append(number_of_drones)
                     except ValueError:
                         raise exception.NotIntError('The amount of drones must be an integer')
@@ -98,21 +98,18 @@ class Parse():
                             x = int(start_parts[2])
                             y = int(start_parts[3])
                             if x < 0 or y < 0:
-                                print('Position must be positive')
-                                return None
+                                raise exception.NegativePositionError('Position must be positive')
                             start_hub: tuple[int, int] = (x, y)
                             variables.append(start_hub)
                         except ValueError:
-                            print('Invalid syntax on line "start_hub", args 2 and 3 must be an integer')
-                            return None
+                            raise exception.NotIntPositionError('Invalid syntax on line "start_hub", args 2 and 3 must be an integer')
                     else:
-                        print('Invalid syntax on line "start_hub"')
-                        return None
+                        raise exception.InvalidSyntaxError('Invalid syntax on line "start_hub"')
 
                     if cls.metadata(line):
                         if not cls.bracket_validator(line):
-                            print('Invalid input file on first 3 parameters, maybe you forgot to close the "[]"?')
-                            return None
+                            raise exception.OpenBracketError('Invalid input file on first 3 parameters, maybe you forgot to close the "[]"?')
+
                         start_hub_color = cls.get_color(line)
                         variables.append(start_hub_color)
                     else:
@@ -125,21 +122,18 @@ class Parse():
                             x = int(end_parts[2])
                             y = int(end_parts[3])
                             if x < 0 or y < 0:
-                                print('Position must be positive')
-                                return None
+                                raise exception.NegativePositionError('Position must be positive')
                             end_hub: tuple[int, int] = (x, y)
                             variables.append(end_hub)
                         except ValueError:
-                            print('Invalid syntax on line "end_hub", args 2 and 3 must be an integer')
-                            return None
+                            raise exception.NotIntPositionError('Invalid syntax on line "end_hub", args 2 and 3 must be an integer')
                     else:
-                        print('Invalid syntax on line "end_hub"')
-                        return None
+                        raise exception.InvalidSyntaxError('Invalid syntax on line "end_hub"')
 
                     if cls.metadata(line):
                         if not cls.bracket_validator(line):
-                            print('Invalid input file, maybe you forgot to close the "[]"?')
-                            return None
+                            raise exception.OpenBracketError('Invalid input file, maybe you forgot to close the "[]"?')
+                        
                         end_hub_color = cls.get_color(line)
                         variables.append(end_hub_color)
                     else:
@@ -180,8 +174,7 @@ class Parse():
             for line in input_file:
                 
                 if not line.startswith('nb_drones:') and not cls.check_valid_name(line):
-                    print('Invalid hub name (cannot have "-")')
-                    return None
+                    raise exception.DashInNameError('Invalid hub name (cannot have "-")')
                 
                 if line.startswith('hub:'):
                     parts = line.split()
@@ -189,19 +182,16 @@ class Parse():
                     try:
                         value = (int(parts[2]), int(parts[3]))
                         if value[0] < 0 or value[1] < 0:
-                            print('Hub position must be positive')
-                            return None
+                            raise exception.NegativeHubPositionError('Hub position must be positive')
                     except Exception:
-                        print('You must pass an integer on aruments 2 and 3 of hubs')
-                        return None
+                        raise exception.NotIntPositionError('You must pass an integer on aruments 2 and 3 of hubs')
                     
                     hub_entry = {'name': key, 'position': (value)}
                     if cls.metadata(line):
                         if not cls.bracket_validator(line):
-                            print('Invalid input file on hubs, maybe you forgot to close the "[]"?')
-                            return None
+                            raise exception.OpenBracketError('Invalid input file on hubs, maybe you forgot to close the "[]"?')
 
-                        standard_zones: list[str] = [None, 'normal', 'blocked', 'restricted', 'priority']
+                        standard_zones: list[None | str] = [None, 'normal', 'blocked', 'restricted', 'priority']
                         metadata: dict = cls.parse_metadata(line)
                         if metadata.get('zone') in standard_zones: 
                             hub_entry['zone'] = metadata.get('zone')
@@ -217,11 +207,9 @@ class Parse():
                         try:
                             hub_entry['max_drones'] = int(metadata.get('max_drones')) if metadata.get('max_drones') is not None else 1
                             if metadata.get('max_drones') is not None and int(metadata.get('max_drones')) < 0:
-                                print('max_drones field must be a positive integer')
-                                return None
+                                raise exception.NotIntError('max_drones field must be a positive integer')
                         except ValueError:
-                            print('A positive integer must be passed as a parameter')
-                            return None
+                            raise exception.NegativeError('A positive integer must be passed as a parameter')
                         data.append(hub_entry)
         return data
     
