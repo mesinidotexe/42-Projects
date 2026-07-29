@@ -1,5 +1,5 @@
-from parse.parse import Parse
-from colorama import init, Fore
+from parsing.parse import Parse
+from colorama import init
 import sys
     
 # parameters = [nb_drones, (start_hub0 - start_hub1), start_hub_color, (end_hub0 - end_hub1), end_hub_color]
@@ -8,15 +8,15 @@ class Main():
     @classmethod
     def main(cls):
         init(autoreset=True)
-        if not Parse.duplicate_line('nb_drones:') or not Parse.duplicate_line('start_hub:') or not Parse.duplicate_line('end_hub:'):
-            print('Doubled lines in your input file')
-            sys.exit(1)
+        Parse.duplicate_line('nb_drones:')
+        Parse.duplicate_line('start_hub:')
+        Parse.duplicate_line('end_hub:')
             
         if not Parse.first_line():
             sys.exit(1)
             
         
-        parameters: list[int | str | tuple[int | None, int | None] | None] | None = Parse.splitting_fix_lines()
+        parameters: list[int | str | tuple[int | None, int | None] | None] | None = Parse.splitting_form_lines()
         print(parameters)
         if not parameters:
             print('Empty input_file, wrong input file name or invalid syntax')
@@ -32,12 +32,7 @@ class Main():
             parameters[4] = '\x1b[0m'
             print('There is an outstandard color for "end_hub_color", the program will continue sticking with the regular terminal output color')
 
-
-    
         positions: list[dict[str, None| str, str | str, tuple[int, int]]] = Parse.hubs_positions()
-        if positions is None:
-            print('Error in getting the hubs')
-            sys.exit(1)
         for item in positions:
             print(item)
             print()
