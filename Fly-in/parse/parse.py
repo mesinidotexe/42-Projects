@@ -1,9 +1,7 @@
 from colorama import Fore
 import re
 import sys
-
-class ZoneError(Exception):
-    pass
+import exception
 
 class Parse():
     
@@ -88,16 +86,14 @@ class Parse():
                     try:
                         number_of_drones: int | None = (int(line.split(':')[1]) if len(line.split(':')) == 2 else None)
                         if number_of_drones <= 0:
-                            print('Number of dones must be 1 or higher')
-                            return None
+                            raise exception.NegativeDronesErroor('Number of dones must be 1 or higher')
                         variables.append(number_of_drones)
                     except ValueError:
-                        print('The amount of drones must be an integer')
-                        return None
+                        raise exception.NotIntError('The amount of drones must be an integer')
 
                 elif line.startswith('start_hub:'):
                     start_parts: list = line.split()
-                    if len(start_parts) in (4, 5):
+                    if len(start_parts) in (4, 5, 6):
                         try:
                             x = int(start_parts[2])
                             y = int(start_parts[3])
@@ -124,7 +120,7 @@ class Parse():
 
                 elif line.startswith('end_hub:'):
                     end_parts: list = line.split()
-                    if len(end_parts) in (4, 5):
+                    if len(end_parts) in (4, 5, 6):
                         try:
                             x = int(end_parts[2])
                             y = int(end_parts[3])
@@ -212,7 +208,7 @@ class Parse():
                             if hub_entry['zone'] is None:
                                 hub_entry['zone'] = 'normal'
                         else:
-                            raise ZoneError('Zone name not in the standards')
+                            raise exception.ZoneError('Zone name not in the standards')
                             
                         hub_entry['color'] = cls.get_color(line)
                         if hub_entry['color'] is None or hub_entry['color'] == 'outstandard':
