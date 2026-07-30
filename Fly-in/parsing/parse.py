@@ -75,9 +75,7 @@ class Parse():
             return True
 
     @classmethod
-    def splitting_form_lines(cls) -> list:
-        variables: list[int | str | None | tuple] = []
-
+    def get_nb_drones(cls) -> int:
         with open('input_file.txt') as input_file:
             for line_num, line in enumerate(input_file, start=1):
 
@@ -86,27 +84,34 @@ class Parse():
                     try:
                         number_of_drones: int | None = (int(raw_nb) if len(line.split(':')) == 2 else None)
                         if number_of_drones <= 0:
-                            raise exceptions.NegativeError(
-                                f'line {line_num}: nb_drones must be >= 1, got {number_of_drones}'
-                            )
-                        variables.append(number_of_drones)
-                    except ValueError:
-                        raise exceptions.NotIntError(
-                            f'line {line_num}: nb_drones must be an integer, got "{raw_nb}"'
-                        )
+                            raise exceptions.NegativeError(f'line {line_num}: nb_drones must be >= 1, got {number_of_drones}')
 
-                elif line.startswith('start_hub:'):
+                        return number_of_drones
+                    except ValueError:
+                        raise exceptions.NotIntError(f'line {line_num}: nb_drones must be an integer, got "{raw_nb}"')
+
+    @classmethod
+    def splitting_form_lines(cls) -> list[dict]:
+        result: list[dict] = []
+
+        with open('input_file.txt') as input_file:
+            for line_num, line in enumerate(input_file, start=1):
+                if line.startswith('start_hub:'):
                     start_parts: list = line.split()
                     if len(start_parts) in (4, 5, 6):
                         try:
+                            name = start_parts[1]
                             x = int(start_parts[2])
                             y = int(start_parts[3])
                             if x < 0 or y < 0:
                                 raise exceptions.NegativePositionError(
                                     f'line {line_num}: start_hub position must be >= 0, got ({x}, {y})'
                                 )
-                            start_hub: tuple[int, int] = (x, y)
-                            variables.append(start_hub)
+                            start_hub: dict = {
+                                'name': name,
+                                'position': (x, y),
+                                'color': None,
+                            }
                         except ValueError:
                             raise exceptions.NotIntPositionError(
                                 f'line {line_num}: start_hub x/y must be integers, got "{start_parts[2]}" "{start_parts[3]}"'
@@ -129,24 +134,27 @@ class Parse():
                             raise exceptions.InvalidSyntaxError(
                                 f'line {line_num}: Unknown metadata key(s) on start_hub: {", ".join(unknown)}'
                             )
-                            
-                        start_hub_color = cls.get_color(line)
-                        variables.append(start_hub_color)
-                    else:
-                        variables.append(None)
+
+                        start_hub['color'] = cls.get_color(line)
+
+                    result.append(start_hub)
 
                 elif line.startswith('end_hub:'):
                     end_parts: list = line.split()
                     if len(end_parts) in (4, 5, 6):
                         try:
+                            name = end_parts[1]
                             x = int(end_parts[2])
                             y = int(end_parts[3])
                             if x < 0 or y < 0:
                                 raise exceptions.NegativePositionError(
                                     f'line {line_num}: end_hub position must be >= 0, got ({x}, {y})'
                                 )
-                            end_hub: tuple[int, int] = (x, y)
-                            variables.append(end_hub)
+                            end_hub: dict = {
+                                'name': name,
+                                'position': (x, y),
+                                'color': None,
+                            }
                         except ValueError:
                             raise exceptions.NotIntPositionError(
                                 f'line {line_num}: end_hub x/y must be integers, got "{end_parts[2]}" "{end_parts[3]}"'
@@ -161,7 +169,7 @@ class Parse():
                             raise exceptions.OpenBracketError(
                                 f'line {line_num}: Unclosed brackets in metadata: "{line.strip()}"'
                             )
-                        
+
                         metadata = cls.parse_metadata(line, line_num)
                         allowed = {'color', 'max_drones'}
                         unknown = set(metadata) - allowed
@@ -169,13 +177,12 @@ class Parse():
                             raise exceptions.InvalidSyntaxError(
                                 f'line {line_num}: Unknown metadata key(s) on end_hub: {", ".join(unknown)}'
                             )
-                        
-                        end_hub_color = cls.get_color(line)
-                        variables.append(end_hub_color)
-                    else:
-                        variables.append(None)
-                
-        return variables
+
+                        end_hub['color'] = cls.get_color(line)
+
+                    result.append(end_hub)
+
+        return result
     
     #auxiliar method
     @staticmethod
@@ -349,7 +356,8 @@ class Parse():
                                 raise exceptions.NegativeError(f'line {line_num}: max_link_capacity ({metadata['max_link_capacity']}) must be a positive integer')
                         except ValueError:
                             raise exceptions.NotIntError(f'line {line_num}: "{metadata['max_link_capacity']}" is not an integer')
-
+                    else:
+                        entry['max_link_capacity'] = 1
                     connection_info.append(entry)
                     if cls.connections_repeat(connection_info):
                         raise exceptions.RepeatedConnectionError(f'line {line_num}: {first.strip()}-{second.strip()} is a repeated connection')
