@@ -54,3 +54,8 @@ class DoubledNameError(Exception):
 class RepeatedConnectionError(Exception):
     """Error when there is a repeated connection"""
     pass
+
+
+class NewLinkWError(Exception):
+    """Error when there is a new name in connections"""
+    pass

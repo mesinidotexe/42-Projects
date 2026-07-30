@@ -287,20 +287,72 @@ class Parse():
                             raise exceptions.DoubledNameError(f'line {line_num}: zone name "{key}" is doubled')
         return data
     
+    # Auxiliar method
+    @staticmethod
+    def connections_repeat(connections: list[dict[str, str]]):
+        seen: list[tuple[str, str]] = []
+        for connection in connections:
+            a: str = connection['connection1'].strip()
+            b: str = connection['connection2'].strip()
+            pair: tuple[str, str] = tuple(sorted((a, b)))
+            if pair in seen:
+                return True
+            seen.append(pair)
+        return False
+    
+    # Auxiliar method
+    @staticmethod
+    def new_link(connections: list[dict[str, str]], defined: list[str]) -> bool:
+        for connection in connections:
+            a = connection['connection1'].strip()
+            b = connection['connection2'].strip()
+            if a not in defined or b not in defined:
+                return True  # unknown zone → error
+        return False
+
+    @classmethod
+    def defined_zones(cls) -> list[str]:
+        names: list[str] = []
+        with open('input_file.txt') as input_file:
+            for line in input_file:
+                if line.startswith('start_hub:') or line.startswith('end_hub:') or line.startswith('hub:'):
+                    names.append(line.split()[1])  # the zone name
+        return names
     
     @classmethod
     def get_connections(cls) -> list[dict[str, str]]:
-        connections: list[dict] = []
+        defined = cls.defined_zones()
+        connection_info: list[dict] = []
+
         with open('input_file.txt') as input_file:
-            for line_num, line in enumerate(input_file):
+            for line_num, line in enumerate(input_file, start=1):
                 if line.startswith('connection'):
                     connection = line.split(':')[1].strip()
-                    if '[' in connection:
+                    metadata: dict[str, str] = {}
+
+                    if cls.metadata(line):
                         if not cls.bracket_validator(line):
                             raise exceptions.OpenBracketError(f'line {line_num}: Unclosed brackets in metadata: "{line.strip()}"')
-                        connection = connection.split('[')[0]
-                    connection1, connection2 = connection.split('-')
-                    connections.append({'connection1': connection1, 'connection2': connection2})
+                        
+                        metadata = cls.parse_metadata(line, line_num)
+                        connection = connection.split('[')[0].strip()
+
+                    first, second = connection.split('-')
+                    entry = {
+                        'connection1': first.strip(),
+                        'connection2': second.strip(),
+                    }
+                    if 'max_link_capacity' in metadata:   
+                        try:                         
+                            entry['max_link_capacity'] = int(metadata['max_link_capacity'])
+                        except ValueError:
+                            raise exceptions.NotIntError(f'line {line_num}: "{metadata['max_link_capacity']}" is not an integer')
+
+                    connection_info.append(entry)
+                    if cls.connections_repeat(connection_info):
+                        raise exceptions.RepeatedConnectionError(f'line {line_num}: {first.strip()}-{second.strip()} is a repeated connection')
                     
-        return connections
-        
+                    if cls.new_link(connection_info, defined):
+                        raise exceptions.NewLinkWError(f'line {line_num}: non defined name in line "{line.strip()}"')
+
+        return connection_info
