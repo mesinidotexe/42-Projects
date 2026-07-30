@@ -4,8 +4,6 @@ import parsing.exceptions as exceptions
 
 class Parse():
     
-    standard_zones: list[str] = ['normal', 'blocked', 'restricted', 'priority']
-    
     # Auxiliar method
     @staticmethod
     def metadata(line: str) -> bool:
@@ -252,7 +250,7 @@ class Parse():
                             f'line {line_num}: hub "{key}" x/y must be integers, got "{x_token}" "{y_token}"'
                         )
                     
-                    hub_entry = {'name': key, 'position': (value)}
+                    hub_info = {'name': key, 'position': (value)}
                     if cls.metadata(line):
                         if not cls.bracket_validator(line):
                             raise exceptions.OpenBracketError(
@@ -262,20 +260,20 @@ class Parse():
                         standard_zones: list[None | str] = [None, 'normal', 'blocked', 'restricted', 'priority']
                         metadata: dict = cls.parse_metadata(line, line_num)
                         if metadata.get('zone') in standard_zones: 
-                            hub_entry['zone'] = metadata.get('zone')
-                            if hub_entry['zone'] is None:
-                                hub_entry['zone'] = 'normal'
+                            hub_info['zone'] = metadata.get('zone')
+                            if hub_info['zone'] is None:
+                                hub_info['zone'] = 'normal'
                         else:
                             raise exceptions.ZoneError(
                                 f'line {line_num}: hub "{key}": invalid zone "{metadata.get("zone")}", expected one of {standard_zones}'
                             )
                             
-                        hub_entry['color'] = cls.get_color(line)
-                        if hub_entry['color'] is None or hub_entry['color'] == 'outstandard':
-                            hub_entry['color'] = '\x1b[0m'
+                        hub_info['color'] = cls.get_color(line)
+                        if hub_info['color'] is None or hub_info['color'] == 'outstandard':
+                            hub_info['color'] = '\x1b[0m'
                         
                         try:
-                            hub_entry['max_drones'] = int(metadata.get('max_drones')) if metadata.get('max_drones') is not None else 1
+                            hub_info['max_drones'] = int(metadata.get('max_drones')) if metadata.get('max_drones') is not None else 1
                             if metadata.get('max_drones') is not None and int(metadata.get('max_drones')) < 0:
                                 raise exceptions.NegativeError(
                                     f'line {line_num}: hub "{key}": max_drones must be >= 0, got {metadata.get("max_drones")}'
@@ -284,12 +282,25 @@ class Parse():
                             raise exceptions.NotIntError(
                                 f'line {line_num}: hub "{key}": max_drones must be an integer, got "{metadata.get("max_drones")}"'
                             )
-                        data.append(hub_entry)
+                        data.append(hub_info)
                         if cls.doubled_name(data):
                             raise exceptions.DoubledNameError(f'line {line_num}: zone name "{key}" is doubled')
         return data
     
     
-    # @classmethod
-    # def connections(cls) -> str:
+    @classmethod
+    def get_connections(cls) -> list[dict[str, str]]:
+        connections: list[dict] = []
+        with open('input_file.txt') as input_file:
+            for line_num, line in enumerate(input_file):
+                if line.startswith('connection'):
+                    connection = line.split(':')[1].strip()
+                    if '[' in connection:
+                        if not cls.bracket_validator(line):
+                            raise exceptions.OpenBracketError(f'line {line_num}: Unclosed brackets in metadata: "{line.strip()}"')
+                        connection = connection.split('[')[0]
+                    connection1, connection2 = connection.split('-')
+                    connections.append({'connection1': connection1, 'connection2': connection2})
+                    
+        return connections
         

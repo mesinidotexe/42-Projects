@@ -49,3 +49,8 @@ class ZoneError(Exception):
 class DoubledNameError(Exception):
     """Error when there is 2 zones with the same name"""
     pass
+
+
+class RepeatedConnectionError(Exception):
+    """Error when there is a repeated connection"""
+    pass
