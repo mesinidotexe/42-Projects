@@ -44,3 +44,8 @@ class NegativeHubPositionError(Exception):
 class ZoneError(Exception):
     """Error when a zone name is not in the standards"""
     pass
+
+
+class DoubledNameError(Exception):
+    """Error when there is 2 zones with the same name"""
+    pass

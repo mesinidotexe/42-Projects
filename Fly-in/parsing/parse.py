@@ -212,9 +212,18 @@ class Parse():
         except IndexError:
             return True
         
+    @staticmethod
+    def doubled_name(data: list[dict]) -> bool:
+        seen: list[str] = []
+        for item in data:
+            if item.get('name') in seen:
+                return True
+            seen.append(item.get('name')) 
+        return False
+        
     @classmethod
     def hubs_positions(cls) -> list[dict]:
-        data: list = []
+        data: list[dict] = []
         
         with open('input_file.txt') as input_file:
             for line_num, line in enumerate(input_file, start=1):
@@ -276,6 +285,8 @@ class Parse():
                                 f'line {line_num}: hub "{key}": max_drones must be an integer, got "{metadata.get("max_drones")}"'
                             )
                         data.append(hub_entry)
+                        if cls.doubled_name(data):
+                            raise exceptions.DoubledNameError(f'line {line_num}: zone name "{key}" is doubled')
         return data
     
     
