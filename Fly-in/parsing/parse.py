@@ -345,6 +345,8 @@ class Parse():
                     if 'max_link_capacity' in metadata:   
                         try:                         
                             entry['max_link_capacity'] = int(metadata['max_link_capacity'])
+                            if int(metadata['max_link_capacity']) < 0:
+                                raise exceptions.NegativeError(f'line {line_num}: max_link_capacity ({metadata['max_link_capacity']}) must be a positive integer')
                         except ValueError:
                             raise exceptions.NotIntError(f'line {line_num}: "{metadata['max_link_capacity']}" is not an integer')
 
