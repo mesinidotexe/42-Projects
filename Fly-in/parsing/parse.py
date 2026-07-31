@@ -277,6 +277,8 @@ class Parse():
                             
                         hub_info['color'] = cls.get_color(line)
                         if hub_info['color'] is None or hub_info['color'] == 'outstandard':
+                            print(f'There is an outstandard color in "{hub_info["name"]}", the program will continue sticking with the regular terminal output color')
+                            print()
                             hub_info['color'] = '\x1b[0m'
                         
                         try:
