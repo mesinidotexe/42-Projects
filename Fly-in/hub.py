@@ -21,3 +21,4 @@ class Hub:
         self.cost = self.get_cost(self.zone)
         self.allowed = self.cost is not None
         self.priority = self.zone == 'priority'
+        self.visited = False

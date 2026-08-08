@@ -1,4 +1,5 @@
 from parsing.parse import Parse
+from simulation import Simulation
 from graph import Graph
 from hub import Hub
 from colorama import init
@@ -64,14 +65,25 @@ class Main():
         all_hubs: dict[str, Hub] = {h.name: h for h in [start, end] + middle}
         connections: list[dict] = Parse.get_connections()
         graph: Graph = Graph(all_hubs, connections)
-        blueprint = graph.create()
-
-        for name, neighbors in graph:
-            print(f'{name} -> {neighbors}')
-
+        mapa: dict[str, Hub] = graph.build()
+        
+        # print('--- hubs ---')
+        # for name, hub in mapa['hubs'].items():
+        #     print(f'{name}: pos={hub.position}, zone={hub.zone}, cost={hub.cost}, max={hub.max_drones}')
+            
+        # print()
+        # print('--- links ---')
+        # for name, neighbors in mapa['links'].items():
+        #     print(f'{name} -> {neighbors}')
+        # print()
+        
+        path = Simulation.bfs(mapa, start.name, end.name)
+        
+        
 
 if __name__ == '__main__':
     try:
         Main.main()
     except Exception as e:
         print(f'Failed dummy\n{e}')
+
