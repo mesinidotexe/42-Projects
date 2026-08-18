@@ -1,25 +1,57 @@
 import pygame
+import sys
+from hub import Hub
+from colorama import Fore
 
-pygame.init()
 
-screen = pygame.display.set_mode((800, 600))  # window size
-clock = pygame.time.Clock()
+class Display():
+    
+    @staticmethod
+    def create_hub():
+        return pygame.Surface((25,25))
+        
+    @classmethod
+    def display(cls, path, all_hubs: dict[str, Hub]):
+        surfaces: list = []
+        pygame.init()
+        pygame.display.set_caption('Fly_in')
 
-running = True
-while running:
-    # 1. Handle events (input, closing window, etc.)
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            running = False
+        screen = pygame.display.set_mode((800, 400))
+        clock = pygame.time.Clock()
+        for hub in all_hubs.values():
+            surfaces.append(cls.create_hub())
+            
+        for surface, hub in zip(surfaces, all_hubs.values()):
+            if hub.color == Fore.BLACK:
+                surface.fill('Black')
+            elif hub.color == Fore.BLUE:
+                surface.fill('Blue')
+            elif hub.color == Fore.CYAN:
+                surface.fill('Cyan')
+            elif hub.color == Fore.GREEN:
+                surface.fill('Green')
+            elif hub.color == Fore.MAGENTA:
+                surface.fill('MAGENTA')
+            elif hub.color == Fore.RED:
+                surface.fill('Red')
+            elif hub.color == Fore.WHITE:
+                surface.fill('White')
+            elif hub.color == Fore.YELLOW:
+                surface.fill('Yellow')
+            elif hub.color == Fore.LIGHTBLACK_EX:
+                surface.fill('Gray')
 
-    # 2. Update game state (move things, check collisions, etc.)
-    # ... your logic goes here
+        while True:
+            # 1. Handle events (input, closing window, etc.)
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit(0)
 
-    # 3. Draw everything
-    screen.fill((30, 30, 30))  # clear screen with a dark gray
-    # ... draw shapes/images here
+            for surface, hub in zip(surfaces, all_hubs.values()):
+                screen.blit(surface, (hub.position[0] * 25, hub.position[1] * 25))
+            
 
-    pygame.display.flip()  # show what we just drew
-    clock.tick(60)  # limit to 60 frames per second
+            pygame.display.update()
+            clock.tick(60)  # limit to 60 frames per second
 
-pygame.quit()

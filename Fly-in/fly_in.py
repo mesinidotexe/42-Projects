@@ -1,12 +1,23 @@
 from parsing.parse import Parse
 from simulation import Simulation
 from graph import Graph
+from teste import Display
 from hub import Hub
 from colorama import init
 import sys
 
 
 class Main():
+
+    @staticmethod
+    def outstandard_color(start_end):
+        if start_end[0]['color'] == 'outstandard':
+            start_end[0]['color'] = '\x1b[0m'
+            print('There is an outstandard color in "start_hub_color", the program will continue sticking with the regular terminal output color')
+        if start_end[1]['color'] == 'outstandard':
+            start_end[1]['color'] = '\x1b[0m'
+            print('There is an outstandard color in "end_hub_color", the program will continue sticking with the regular terminal output color')
+
 
     @classmethod
     def main(cls):
@@ -29,13 +40,7 @@ class Main():
             print('Invalid syntax in one or more lines on the first 3 lines in input_file, exitting the program')
             sys.exit(1)
 
-        if start_end[0]['color'] == 'outstandard':
-            start_end[0]['color'] = '\x1b[0m'
-            print('There is an outstandard color in "start_hub_color", the program will continue sticking with the regular terminal output color')
-        if start_end[1]['color'] == 'outstandard':
-            start_end[1]['color'] = '\x1b[0m'
-            print('There is an outstandard color in "end_hub_color", the program will continue sticking with the regular terminal output color')
-
+        
         hubs: list[dict] = Parse.hubs_positions()
 
         start: Hub = Hub(
@@ -78,7 +83,7 @@ class Main():
         # print()
         
         path = Simulation.bfs(mapa, start.name, end.name)
-        
+        Display.display(path, all_hubs)
         
 
 if __name__ == '__main__':
