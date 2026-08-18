@@ -40,6 +40,7 @@ class Main():
             print('Invalid syntax in one or more lines on the first 3 lines in input_file, exitting the program')
             sys.exit(1)
 
+        cls.outstandard_color(start_end)
         
         hubs: list[dict] = Parse.hubs_positions()
 

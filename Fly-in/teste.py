@@ -12,12 +12,21 @@ class Display():
         
     @classmethod
     def display(cls, path, all_hubs: dict[str, Hub]):
-        surfaces: list = []
         pygame.init()
         pygame.display.set_caption('Fly_in')
 
-        screen = pygame.display.set_mode((800, 400))
+        surfaces: list = []
+        screen = pygame.display.set_mode((1600, 900))
         clock = pygame.time.Clock()
+        font = pygame.font.Font(None, 25)
+        minus = font.render('-', False, 'Black')
+        pipe = font.render('|', False, 'Black')
+        slash = font.render('/', False, 'Black')
+        bslash = font.render('\\', False, 'Black')
+        # Ordered so the symbol appears to rotate: - \ | /
+        symbols = [minus, bslash, pipe, slash]
+        
+
         for hub in all_hubs.values():
             surfaces.append(cls.create_hub())
             
@@ -38,9 +47,10 @@ class Display():
                 surface.fill('White')
             elif hub.color == Fore.YELLOW:
                 surface.fill('Yellow')
-            elif hub.color == Fore.LIGHTBLACK_EX:
+            elif hub.color == Fore.LIGHTBLACK_EX or hub.color == '\x1b[0m':
                 surface.fill('Gray')
 
+        frame = 0
         while True:
             # 1. Handle events (input, closing window, etc.)
             for event in pygame.event.get():
@@ -48,10 +58,17 @@ class Display():
                     pygame.quit()
                     sys.exit(0)
 
+            symbol = symbols[(frame // 20) % 4]
+
             for surface, hub in zip(surfaces, all_hubs.values()):
-                screen.blit(surface, (hub.position[0] * 25, hub.position[1] * 25))
+                screen.blit(surface, (hub.position[0] * 35, hub.position[1] * 35))
+                screen.blit(symbol, (hub.position[0] * 35 + 9, hub.position[1] * 35 + 6))
+
+            frame += 1
+                
+                
             
 
             pygame.display.update()
-            clock.tick(60)  # limit to 60 frames per second
+            clock.tick(240)  # limit to 60 frames per second
 
