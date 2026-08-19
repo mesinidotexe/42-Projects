@@ -70,6 +70,8 @@ class Main():
 
         all_hubs: dict[str, Hub] = {h.name: h for h in [start, end] + middle}
         connections: list[dict] = Parse.get_connections()
+        for connection in connections:
+            print(connection)
         graph: Graph = Graph(all_hubs, connections)
         mapa: dict[str, Hub] = graph.build()
         
@@ -84,12 +86,14 @@ class Main():
         # print()
         
         path = Simulation.bfs(mapa, start.name, end.name)
-        Display.display(path, all_hubs)
+        print(path)
+        Display.display(path, all_hubs, connections)
         
 
 if __name__ == '__main__':
-    try:
-        Main.main()
-    except Exception as e:
-        print(f'Failed dummy\n{e}')
+    # try:
+    #     Main.main()
+    # except Exception as e:
+    #     print(f'Failed dummy\n{e}')
+    Main.main()
 
