@@ -85,8 +85,7 @@ class Main():
         #     print(f'{name} -> {neighbors}')
         # print()
         
-        path = Simulation.bfs(mapa, start.name, end.name)
-        print(path)
+        path: list[str] = Simulation.bfs(mapa, start.name, end.name)
         Display.display(path, all_hubs, connections)
         
 

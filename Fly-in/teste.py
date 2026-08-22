@@ -8,7 +8,7 @@ class Display():
 
     @staticmethod
     def create_hub():
-        return pygame.Surface((25,25))
+        return pygame.Surface((26,26))
     
     
     @staticmethod
@@ -45,11 +45,11 @@ class Display():
             hub_subtitle = text_font.render(hub.name, False, 'White')
             
             if hub.role == 'start':
-                screen.blit(start_subtitle, (hub.position[0] * 34, hub.position[1] * 34 - 12))
+                screen.blit(start_subtitle, (hub.position[0] * 34, hub.position[1] * 34 - 13))
             elif hub.role == 'end':
-                screen.blit(end_subtitle, (hub.position[0] * 34, hub.position[1] * 34 - 12))
+                screen.blit(end_subtitle, (hub.position[0] * 34, hub.position[1] * 34 - 13))
             elif hub.role == 'hub':
-                screen.blit(hub_subtitle, (hub.position[0] * 34, hub.position[1] * 34 - 12))    
+                screen.blit(hub_subtitle, (hub.position[0] * 34, hub.position[1] * 34 - 13))    
     
     
     @staticmethod
@@ -58,7 +58,7 @@ class Display():
         for hub in all_hubs.values():
             for connection in connections:
                 if connection['connection1'] == hub.name:
-                    pygame.draw.line(screen, white, (hub.position[0] * 34 + 25, hub.position[1] * 34 + 12), (all_hubs[connection['connection2']].position[0] * 34, all_hubs[connection['connection2']].position[1] * 34 + 12), 1)
+                    pygame.draw.line(screen, white, (hub.position[0] * 34 + 26, hub.position[1] * 34 + 13), (all_hubs[connection['connection2']].position[0] * 34, all_hubs[connection['connection2']].position[1] * 34 + 13), 1)
     
         
     @staticmethod
@@ -68,22 +68,41 @@ class Display():
         
         
     @staticmethod
-    def drones(all_hubs, symbol, underline, screen):
-        for hub in all_hubs.values():
-            if symbol != underline:
-                screen.blit(symbol, (hub.position[0] * 34 + 9, hub.position[1] * 34 + 6))
-            else:
-                screen.blit(symbol, (hub.position[0] * 34 + 7, hub.position[1] * 34 - 2))
+    def drones(screen, all_hubs: dict[str, Hub], text_font, path: list[dict[str,]], frame, symbol):
+        test_drone = text_font.render('X', False, 'Black')
+        
+        n_hops = len(path) - 1
+
+        hop = frame // 200
+        t = (frame % 200) / 200
+        
+        if hop >= n_hops:
+            hop = n_hops - 1
+            t = 1.0
+
+        start = all_hubs[path[hop]]
+        end = all_hubs[path[hop + 1]]
+        
+        x0 = start.position[0] * 34 + 26
+        y0 = start.position[1] * 34 + 7
+        x1 = end.position[0] * 34 + 8
+        y1 = end.position[1] * 34 + 7
+        
+        # (x1 - x0) is the full horizontal distance. Multiply by t and you take that fraction of it.
+        x = x0 + (x1 - x0) * t
+        y = y0 + (y1 - y0) * t
+        screen.blit(test_drone, (x, y))
         
         
+
     @classmethod
     def display(cls, path, all_hubs: dict[str, Hub], connections: list[dict]):
         pygame.init()
         pygame.display.set_caption('Fly_in')
 
-        surfaces: list = []
+        surfaces: list[pygame.Surface] = []
         
-        screen: pygame = pygame.display.set_mode((1600, 900))
+        screen: pygame.display.set_mode = pygame.display.set_mode((1600, 900))
         clock = pygame.time.Clock()
 
         text_font = pygame.font.Font(None, 20)
@@ -114,7 +133,7 @@ class Display():
             cls.draw_line(connections, screen, all_hubs)
             cls.zone_name(all_hubs, screen, text_font)
             cls.zones(surfaces, all_hubs, screen)
-            cls.drones(all_hubs, symbol, underline, screen)
+            cls.drones(screen, all_hubs, text_font, path, frame, symbol)
             
         
             frame += 1
