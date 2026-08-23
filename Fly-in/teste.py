@@ -102,7 +102,7 @@ class Display():
 
         surfaces: list[pygame.Surface] = []
         
-        screen: pygame.display.set_mode = pygame.display.set_mode((1600, 900))
+        screen: pygame.display.set_mode = pygame.display.set_mode((1600, 900), pygame.RESIZABLE)
         clock = pygame.time.Clock()
 
         text_font = pygame.font.Font(None, 20)
