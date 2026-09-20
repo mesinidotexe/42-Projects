@@ -11,7 +11,7 @@ class Hub:
     def get_cost(zone: str) -> int | None:
         return Hub._ZONE_COST.get(zone)
     
-    def __init__(self, name: str, position: tuple[int, int], color: str | None=None, zone: str ='normal', max_drones: int=1, role: str='hub'):
+    def __init__(self, name: str, position: list[int], color: str | None=None, zone: str ='normal', max_drones: int=1, role: str='hub'):
         self.name = name
         self.position = position
         self.color = color

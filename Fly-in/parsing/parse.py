@@ -66,13 +66,6 @@ class Parse():
                 f'Duplicate "{label}" entries at lines {", ".join(map(str, lines_found))}'
             )
                 
-    @classmethod
-    def first_line(cls):
-        with open('input_file.txt') as input_file:
-            if not input_file.readlines()[0].startswith('nb_drones:'):
-                    print('The first line should start with "nb_drones:"')
-                    return False
-            return True
 
     @classmethod
     def get_nb_drones(cls) -> int:
@@ -96,6 +89,8 @@ class Parse():
 
         with open('input_file.txt') as input_file:
             for line_num, line in enumerate(input_file, start=1):
+                if line.startswith('#'):
+                    continue
                 if line.startswith('start_hub:'):
                     start_parts: list = line.split()
                     if len(start_parts) in (4, 5, 6):
@@ -109,7 +104,7 @@ class Parse():
                                 )
                             start_hub: dict = {
                                 'name': name,
-                                'position': (x, y),
+                                'position': [x, y],
                                 'color': None,
                             }
                         except ValueError:
@@ -152,7 +147,7 @@ class Parse():
                                 )
                             end_hub: dict = {
                                 'name': name,
-                                'position': (x, y),
+                                'position': [x, y],
                                 'color': None,
                             }
                         except ValueError:
@@ -243,13 +238,7 @@ class Parse():
                     parts = line.split()
                     key = parts[1]
                     try:
-                        value = (int(parts[2]), int(parts[3]))
-                        if value[0] < 0 or value[1] < 0:
-                            raise exceptions.NegativeHubPositionError(
-                                f'line {line_num}: hub "{key}" position must be >= 0, got {value}'
-                            )
-                    except exceptions.NegativeHubPositionError:
-                        raise
+                        value = [int(parts[2]), int(parts[3])]
                     except (ValueError, IndexError):
                         x_token = parts[2] if len(parts) > 2 else '<missing>'
                         y_token = parts[3] if len(parts) > 3 else '<missing>'
@@ -257,7 +246,7 @@ class Parse():
                             f'line {line_num}: hub "{key}" x/y must be integers, got "{x_token}" "{y_token}"'
                         )
                     
-                    hub_info = {'name': key, 'position': (value)}
+                    hub_info = {'name': key, 'position': value}
                     if cls.metadata(line):
                         if not cls.bracket_validator(line):
                             raise exceptions.OpenBracketError(
@@ -355,9 +344,9 @@ class Parse():
                         try:                         
                             entry['max_link_capacity'] = int(metadata['max_link_capacity'])
                             if int(metadata['max_link_capacity']) < 0:
-                                raise exceptions.NegativeError(f'line {line_num}: max_link_capacity ({metadata['max_link_capacity']}) must be a positive integer')
+                                raise exceptions.NegativeError(f'line {line_num}: max_link_capacity ({metadata["max_link_capacity"]}) must be a positive integer')
                         except ValueError:
-                            raise exceptions.NotIntError(f'line {line_num}: "{metadata['max_link_capacity']}" is not an integer')
+                            raise exceptions.NotIntError(f'line {line_num}: "{metadata["max_link_capacity"]}" is not an integer')
                     else:
                         entry['max_link_capacity'] = 1
                     connection_info.append(entry)

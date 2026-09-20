@@ -1,7 +1,7 @@
 from parsing.parse import Parse
-from simulation import Simulation
+from algorithm import Simulation
 from graph import Graph
-from teste import Display
+from simulation import Display
 from hub import Hub
 from colorama import init
 import sys
@@ -27,8 +27,6 @@ class Main():
         Parse.duplicate_line('start_hub:')
         Parse.duplicate_line('end_hub:')
 
-        if not Parse.first_line():
-            sys.exit(1)
 
         nb_drones: int = Parse.get_nb_drones()
         start_end = Parse.splitting_form_lines()
@@ -70,8 +68,6 @@ class Main():
 
         all_hubs: dict[str, Hub] = {h.name: h for h in [start, end] + middle}
         connections: list[dict] = Parse.get_connections()
-        for connection in connections:
-            print(connection)
         graph: Graph = Graph(all_hubs, connections)
         mapa: dict[str, Hub] = graph.build()
         

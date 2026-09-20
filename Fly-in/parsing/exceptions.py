@@ -36,9 +36,9 @@ class DashInNameError(Exception):
     pass
 
 
-class NegativeHubPositionError(Exception):
-    """Error when a hub position is negative"""
-    pass
+# class NegativeHubPositionError(Exception):
+#     """Error when a hub position is negative"""
+#     pass
 
 
 class ZoneError(Exception):
