@@ -78,31 +78,30 @@ class Display():
         
     @staticmethod
     def drones(hubs_width, hubs_height, screen, all_hubs: dict[str, Hub], text_font, path: list[dict[str,]], frame, symbol):
-        for hub in all_hubs.values():
-            test_drone = text_font.render('X', False, 'Black')
-            
-            n_hops = len(path) - 1
-
-            hop = frame // 200
-            t = (frame % 200) / 200
-            
-            if hop >= n_hops:
-                hop = n_hops - 1
-                t = 1.0
-
-            start = all_hubs[path[hop]]
-            end = all_hubs[path[hop + 1]]
-            
-            x0 = (1600 / hubs_width) * hub.position[0] + 1600 / (hubs_width * 2)
-            y0 = (900 / hubs_height) * hub.position[1] + 900 / hubs_height
-            x1 = end.position[0] * 34 + 8
-            y1 = end.position[1] * 34 + 7
-            
-            # (x1 - x0) is the full horizontal distance. Multiply by t and you take that fraction of it.
-            x = x0 + (x1 - x0) * t
-            y = y0 + (y1 - y0) * t
-            screen.blit(test_drone, (x, y))
+        test_drone = text_font.render('X', False, 'Black')
         
+        n_hops = len(path) - 1
+
+        hop = frame // 200
+        t = (frame % 200) / 200
+        
+        if hop >= n_hops:
+            hop = n_hops - 1
+            t = 1.0
+
+        start = all_hubs[path[hop]]
+        end = all_hubs[path[hop + 1]]
+        
+        x0 = (1600 / hubs_width) * start.position[0] + 1600 / (hubs_width * 2)
+        y0 = (900 / hubs_height) * start.position[1] + 900 / hubs_height
+        x1 = (1600 / hubs_width) * end.position[0] + 1600 / (hubs_width * 2)
+        y1 = (900 / hubs_height) * end.position[1] + 900 / hubs_height
+        
+        # (x1 - x0) is the full horizontal distance. Multiply by t and you take that fraction of it.
+        x = x0 + (x1 - x0) * t
+        y = y0 + (y1 - y0) * t
+        screen.blit(test_drone, (x, y))
+    
     
 
     @staticmethod
