@@ -65,7 +65,7 @@ class Display():
                     y1 = (900 / hubs_height) * hub.position[1] + 900 / hubs_height
                     x2 = (1600 / hubs_width) * all_hubs[connection['connection2']].position[0] + 1600 / (hubs_width * 2)
                     y2 = (900 / hubs_height) * all_hubs[connection['connection2']].position[1] + 900 / hubs_height
-                    pygame.draw.line(screen, white, (x1, y1), (x2, y2), 1)
+                    pygame.draw.line(screen, white, (x1 + 26, y1 + 13), (x2, y2 + 13), 1)
     
         
     @staticmethod
