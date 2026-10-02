@@ -1,5 +1,5 @@
 from parsing.parse import Parse
-from algorithm import Simulation
+from algorithm import Algorithm
 from graph import Graph
 from simulation import Display
 from hub import Hub
@@ -80,8 +80,7 @@ class Main():
         # for name, neighbors in mapa['links'].items():
         #     print(f'{name} -> {neighbors}')
         # print()
-        
-        path: list[str] = Simulation.bfs(mapa, start.name, end.name)
+        path: list[str] = Algorithm.bfs(mapa, start.name, end.name, all_hubs)
         Display.display(path, all_hubs, connections)
         
 

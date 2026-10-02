@@ -1,10 +1,10 @@
 from hub import Hub
 from collections import deque
 
-class Simulation():
+class Algorithm():
     
     @classmethod
-    def bfs(cls, mapa: dict[str, Hub], start: Hub, end: Hub):
+    def bfs(cls, mapa: dict[str, Hub], start: str, end: str, all_hubs):
         for hub in mapa['hubs'].values():
             hub.visited = False
         
@@ -32,8 +32,8 @@ class Simulation():
         path: list[str] = []
         node: str | None = end
         while node is not None:
-            path.append(node)
+            path.append(all_hubs[node])
             node = parent[node]
         path.reverse()
-        
+        print(path)
         return path
