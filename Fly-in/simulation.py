@@ -77,7 +77,7 @@ class Display():
         
         
     @staticmethod
-    def drones(hubs_width, hubs_height, screen, all_hubs: dict[str, Hub], text_font, path: list[dict[str,]], frame, symbol):
+    def drones(hubs_width, hubs_height, screen, text_font, path: list[dict[str,]], frame, symbol):
         test_drone = text_font.render('X', False, 'Black')
         
         n_hops = len(path) - 1
@@ -89,13 +89,13 @@ class Display():
             hop = n_hops - 1
             t = 1.0
 
-        start = all_hubs[path[hop]]
-        end = all_hubs[path[hop + 1]]
+        start = path[hop]
+        end = path[hop + 1]
         
-        x0 = (1600 / hubs_width) * start.position[0] + 1600 / (hubs_width * 2)
-        y0 = (900 / hubs_height) * start.position[1] + 900 / hubs_height
-        x1 = (1600 / hubs_width) * end.position[0] + 1600 / (hubs_width * 2)
-        y1 = (900 / hubs_height) * end.position[1] + 900 / hubs_height
+        x0 = (1600 / hubs_width) * start.position[0] + 1600 / (hubs_width * 2) + 8
+        y0 = (900 / hubs_height) * start.position[1] + 900 / hubs_height + 7
+        x1 = (1600 / hubs_width) * end.position[0] + 1600 / (hubs_width * 2) + 8
+        y1 = (900 / hubs_height) * end.position[1] + 900 / hubs_height + 7
         
         # (x1 - x0) is the full horizontal distance. Multiply by t and you take that fraction of it.
         x = x0 + (x1 - x0) * t
@@ -171,7 +171,7 @@ class Display():
             cls.draw_line(hubs_width, hubs_height, connections, screen, all_hubs)
             cls.zone_name(hubs_width, hubs_height, all_hubs, screen, text_font)
             cls.zones(hubs_width, hubs_height, surfaces, all_hubs, screen)
-            cls.drones(hubs_width, hubs_height, screen, all_hubs, text_font, path, frame, symbol)
+            cls.drones(hubs_width, hubs_height, screen, text_font, path, frame, symbol)
             
         
             frame += 1

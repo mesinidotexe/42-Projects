@@ -29,11 +29,10 @@ class Algorithm():
         if end not in parent:
             return None
         
-        path: list[str] = []
+        path: list[Hub] = []
         node: str | None = end
         while node is not None:
             path.append(all_hubs[node])
             node = parent[node]
         path.reverse()
-        print(path)
         return path
